@@ -1,0 +1,4 @@
+.env.development.local
+.git
+.cache
+node_modules
