@@ -52,18 +52,21 @@ The metaverse backpack is a service that creates a virtual backpack for your ass
 ### Prerequisites
 
 * npm
+
   Install npm as the service is based on NodeJS.
   ```sh
   npm install npm@latest -g
   ```
 
 * Docker
+
   Install docker to start a database easily.
   ```sh
   brew cask install docker
   ```
 
 * Environment
+
   Rename the environment file and add credentials. Environment file is read by NestJS and Docker.
   ```sh
   mv .env.example .env
