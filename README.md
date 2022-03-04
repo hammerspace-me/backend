@@ -1,40 +1,91 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
+<div id="top"></div>
+<!--
+*** Thanks for checking out the Best-README-Template. If you have a suggestion
+*** that would make this better, please fork the repo and create a pull request
+*** or simply open an issue with the tag "enhancement".
+*** Don't forget to give the project a star!
+*** Thanks again! Now go create something AMAZING! :D
+-->
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-  
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+<!-- PROJECT SHIELDS -->
+<!--
+*** I'm using markdown "reference style" links for readability.
+*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
+*** See the bottom of this document for the declaration of the reference variables
+*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
+*** https://www.markdownguide.org/basic-syntax/#reference-style-links
+-->
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
 
-## Installation
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/bwtp-sandox/backpack-service">
+    <img src="images/logo.png" alt="Logo" width="200">
+  </a>
+
+<h3 align="center">Metaverse Backpack</h3>
+  <p align="center">
+    A virtual backpack for all your metaverse assets
+    <br />
+    <br />
+    <a href="https://github.com/bwtp-sandox/backpack-service/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/bwtp-sandox/backpack-service/issues">Request Feature</a>
+  </p>
+</div>
+
+<!-- ABOUT THE PROJECT -->
+## About The Project
+
+The metaverse backpack is a service that creates a virtual backpack for your assets stored on IPFS and makes them available for third-party applications.
+
+<!-- GETTING STARTED -->
+## Getting Started
+
+### Prerequisites
+
+* npm
+  Install npm as the service is based on NodeJS.
+  ```sh
+  npm install npm@latest -g
+  ```
+
+* Docker
+  Install docker to start a database easily.
+  ```sh
+  brew cask install docker
+  ```
+
+* Environment
+  Rename the environment file and add credentials. Environment file is read by NestJS and Docker.
+  ```sh
+  mv .env.example .env
+  ```
+
+### Installation
+
+1. Clone the repo
+   ```sh
+   git clone https://github.com/github_username/backpack-service.git
+   ```
+2. Install NPM packages
+   ```sh
+   npm install
+   ```
+
+## Usage
 
 ```bash
-$ npm install
-```
+# development database
+$ npm run start:db
 
-## Running the app
-
-```bash
 # development
 $ npm run start
 
@@ -45,29 +96,49 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Test
+<!-- CONTRIBUTING -->
+## Contributing
 
-```bash
-# unit tests
-$ npm run test
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-# e2e tests
-$ npm run test:e2e
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+Don't forget to give the project a star! Thanks again!
 
-# test coverage
-$ npm run test:cov
-```
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/amazing-feature`)
+3. Commit your Changes (`git commit -m 'add some amazing feature'`)
+4. Push to the Branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
+<!-- LICENSE -->
 ## License
 
-  Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Distributed under the MIT License. See `LICENSE.txt` for more information.
+
+<!-- CONTACT -->
+## Contact
+
+Benedikt Wölk - [@web3woelk](https://twitter.com/web3woelk) - benedikt.woelk@protocol.ai
+
+Tobias Petrasch - [@TPetrasch](https://twitter.com/TPetrasch) - tobias.petrasch@protocol.ai
+
+Project Link: [https://github.com/bwtp-sandox/backpack-service](https://github.com/bwtp-sandox/backpack-service)
+
+<!-- ACKNOWLEDGMENTS -->
+## Acknowledgments
+
+* [Protocol Labs](https://www.protocol.ai)
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[contributors-shield]: https://img.shields.io/github/contributors/bwtp-sandox/backpack-service.svg?style=for-the-badge
+[contributors-url]: https://github.com/bwtp-sandox/backpack-service/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/bwtp-sandox/backpack-service.svg?style=for-the-badge
+[forks-url]: https://github.com/bwtp-sandox/backpack-service/network/members
+[stars-shield]: https://img.shields.io/github/stars/bwtp-sandox/backpack-service.svg?style=for-the-badge
+[stars-url]: https://github.com/bwtp-sandox/backpack-service/stargazers
+[issues-shield]: https://img.shields.io/github/issues/bwtp-sandox/backpack-service.svg?style=for-the-badge
+[issues-url]: https://github.com/bwtp-sandox/backpack-service/issues
+[license-shield]: https://img.shields.io/github/license/bwtp-sandox/backpack-service.svg?style=for-the-badge
+[license-url]: https://github.com/bwtp-sandox/backpack-service/blob/master/LICENSE.txt
+[product-screenshot]: images/screenshot.png
