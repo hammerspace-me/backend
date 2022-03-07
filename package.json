@@ -22,7 +22,7 @@
     "migration:generate": "ts-node node_modules/.bin/typeorm migration:generate",
     "migration:run": "ts-node node_modules/.bin/typeorm migration:run",
     "migration:revert": "ts-node node_modules/.bin/typeorm migration:revert",
-    "postinstall": "npm run prestart:prod"
+    "postinstall": "npm run build"
   },
   "dependencies": {
     "@nestjs/common": "^8.1.1",
