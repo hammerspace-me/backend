@@ -11,13 +11,10 @@ import {
   ValidationPipe,
   ConflictException,
   Post,
-  ClassSerializerInterceptor,
-  UseInterceptors,
 } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
 import { Response } from 'express';
 import { CreateBackpackDto } from './dto/createBackpack.dto';
-import { BackpackItemEntity } from './entities/backpackItem.entity';
 import { BackpackService } from './backpack.service';
 
 @Controller('backpack')
