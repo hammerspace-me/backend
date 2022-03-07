@@ -37,7 +37,7 @@ export class BackpackController {
     if (!backpack) {
       throw new NotFoundException(
         'Backpack could not be found in the database',
-        'USER_NOT_FOUND',
+        'BACKPACK_NOT_FOUND',
       );
     }
     return res.status(HttpStatus.OK).json(backpack);
@@ -55,7 +55,7 @@ export class BackpackController {
   ) {
     const backpack = await this.backpackService.findOne(createBackpackDto.id);
     if (backpack) {
-      throw new ConflictException('Backpack already exists', 'USER_EXISTS');
+      throw new ConflictException('Backpack already exists', 'BACKPACK_EXISTS');
     }
     const createdBackpack = await this.backpackService.create(
       createBackpackDto,
