@@ -86,16 +86,16 @@ The metaverse backpack is a service that creates a virtual backpack for your ass
 ## Usage
 
 ```bash
-# development database
+# Start up the development database
 $ npm run start:db
 
-# development
-$ npm run start
-
-# watch mode
+# *Recommended* Start service in watch mode (automatically reload if files change)
 $ npm run start:dev
 
-# production mode
+# Build service in development mode and run (does not automatically reload)
+$ npm run start
+
+# Build service in production mode and run
 $ npm run start:prod
 ```
 
