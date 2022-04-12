@@ -77,7 +77,7 @@ export class BackpackService {
     return await this.backpackItemRepository.save(newBackpackItem);
   }
 
-  public findBackpackItem(
+  public async findBackpackItem(
     content: string,
     backpack: BackpackEntity,
     withRelations?: boolean,
@@ -87,14 +87,14 @@ export class BackpackService {
     if (withRelations) {
       properties['relations'] = ['backpack'];
     }
-    const backpackItem = this.backpackItemRepository.findOne(properties);
+    const backpackItem = await this.backpackItemRepository.findOne(properties);
     if (!backpackItem) {
       throw new BackpackItemNotFoundException();
     }
     return backpackItem;
   }
 
-  public findBackpack(
+  public async findBackpack(
     id: string,
     withRelations?: boolean,
   ): Promise<BackpackEntity> {
@@ -103,7 +103,7 @@ export class BackpackService {
           relations: ['backpackItems'],
         }
       : null;
-    const backpack = this.backpackRepository.findOne(id, properties);
+    const backpack = await this.backpackRepository.findOne(id, properties);
     if (!backpack) {
       throw new BackpackNotFoundException();
     }
