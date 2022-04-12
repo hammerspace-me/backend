@@ -25,8 +25,10 @@ export class BackpackService {
     private readonly configService: ConfigService,
   ) {}
 
-  public createBackpack(backpack: CreateBackpackDto): Promise<BackpackEntity> {
-    const checkBackpack = this.backpackRepository.findOne(backpack.id);
+  public async createBackpack(
+    backpack: CreateBackpackDto,
+  ): Promise<BackpackEntity> {
+    const checkBackpack = await this.backpackRepository.findOne(backpack.id);
     if (checkBackpack) {
       throw new BackpackExistsException();
     }
