@@ -3,7 +3,6 @@ import {
   Get,
   Param,
   Logger,
-  Res,
   UsePipes,
   Body,
   ValidationPipe,
@@ -12,7 +11,6 @@ import {
   Request,
   HttpCode,
   Delete,
-  UploadedFile,
 } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
 import { CreateBackpackDto } from '../dto/createBackpack.dto';
