@@ -35,12 +35,18 @@ export class BackpackService {
     return this.backpackRepository.save(backpack);
   }
 
+  private dataUriToBuffer(dataUri: string) {
+    return Buffer.from(dataUri.split(',')[1], 'base64');
+  }
+
   public async uploadToIpfs(
     createBackpackItemFromFile: CreateBackpackItemFromFileDto,
   ): Promise<CreateBackpackItemDto> {
-    const binary = Buffer.from(createBackpackItemFromFile.file, 'base64');
-    const fileName = 'Hello';
-    const file = new File([binary], fileName);
+    console.log(createBackpackItemFromFile.file);
+    const buffer = this.dataUriToBuffer(createBackpackItemFromFile.file);
+    // TODO: change to generalized form, not just RPM avatars
+    const fileName = 'default.glb';
+    const file = new File([buffer], fileName);
     const cid = await this.storeFiles(file);
     return {
       source: createBackpackItemFromFile.source,
@@ -53,7 +59,7 @@ export class BackpackService {
     const client = new Web3Storage({
       token: this.configService.get('WEB3STORAGE_TOKEN'),
     });
-    const cid = await client.put([file], { wrapWithDirectory: false });
+    const cid = await client.put([file], { wrapWithDirectory: true });
     return cid;
   }
 
