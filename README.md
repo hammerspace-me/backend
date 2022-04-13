@@ -53,14 +53,18 @@ The backpack backend is a service that creates a virtual backpack for your asset
 
 * npm
 
-  Install npm as the service is based on NodeJS.
+  Install npm as the service is based on NodeJS and uses npm as a package manager.
+  *NOTE:* This installation command requires [brew](https://brew.sh/) and only runs on Mac.
+
   ```sh
-  npm install npm@latest -g
+  $ brew install node
   ```
 
 * Docker
 
   Install docker as the service requires a database for persistent storage.
+  *NOTE:* This installation command requires [brew](https://brew.sh/) and only runs on Mac.
+
   ```sh
   brew cask install docker
   ```
