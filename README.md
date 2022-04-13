@@ -30,9 +30,9 @@
     <img src="images/logo.png" alt="Logo" width="200">
   </a>
 
-<h3 align="center">Metaverse Backpack</h3>
+<h3 align="center">Backpack Backend</h3>
   <p align="center">
-    A virtual backpack for all your metaverse assets
+    Backend service for Metaverse Backpack - a virtual backpack for your Metaverse assets
     <br />
     <br />
     <a href="https://github.com/bwtp-sandox/backpack-service/issues">Report Bug</a>
@@ -44,7 +44,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-The metaverse backpack is a service that creates a virtual backpack for your assets stored on IPFS and makes them available for third-party applications.
+The backpack backend is a service that creates a virtual backpack for your assets stored on IPFS and makes them available for third-party applications.
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -60,17 +60,21 @@ The metaverse backpack is a service that creates a virtual backpack for your ass
 
 * Docker
 
-  Install docker to start a database easily.
+  Install docker as the service requires a database for persistent storage.
   ```sh
   brew cask install docker
   ```
 
 * Environment
 
-  Rename the environment file and add credentials. Environment file is read by NestJS and Docker.
+  Rename the environment file and add your credentials. Environment file is read by NestJS and Docker.
   ```sh
   mv .env.example .env
   ```
+
+* Web3.Storage account and API token
+
+  In order to use web3.storage you need an API key. First, head over to web3.storage to login with your email address. You will receive an email with a magic link that signs you in – no password needed. After you successfully logged in, go to API Keys via the account section of the navigation bar. You will find a button to Create a new token. When prompted for an API key name, you can freely choose one or use “Backpack”. Copy the content of the key column to your .env file.
 
 ### Installation
 
@@ -85,13 +89,20 @@ The metaverse backpack is a service that creates a virtual backpack for your ass
 
 ## Usage
 
+The backpack backend consists of two components: the backend service and the database. First start the database with the following command:
 ```bash
 # Start up the development database
 $ npm run start:db
-
-# *Recommended* Start service in watch mode (automatically reload if files change)
+```
+When the database is running, start the backend service with the following command:
+```bash
+# Start service in watch mode (automatically reload if files change)
 $ npm run start:dev
+```
 
+There are further commands that can be used to start the backend service, e.g., for development mode without watching file changes and production mode:
+
+```bash
 # Build service in development mode and run (does not automatically reload)
 $ npm run start
 
