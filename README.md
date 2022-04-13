@@ -78,7 +78,7 @@ The backpack backend is a service that creates a virtual backpack for your asset
 
 * Web3.Storage account and API token
 
-  In order to use web3.storage you need an API key. First, head over to web3.storage to login with your email address. You will receive an email with a magic link that signs you in – no password needed. After you successfully logged in, go to API Keys via the account section of the navigation bar. You will find a button to Create a new token. When prompted for an API key name, you can freely choose one or use “Backpack”. Copy the content of the key column to your .env file.
+  In order to use web3.storage you need an API key. First, head over to [web3.storage](https://web3.storage) to login with your email address. You will receive an email with a magic link that signs you in – no password needed. After you successfully logged in, go to API Keys via the account section of the navigation bar. You will find a button to Create a new token. When prompted for an API key name, you can freely choose one or use “Backpack”. Copy the content of the key column to your .env file.
 
 ### Installation
 
