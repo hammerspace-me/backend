@@ -26,7 +26,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/bwtp-sandox/backpack-service">
+  <a href="https://github.com/bwtp-sandox/backpack-backend">
     <img src="images/logo.png" alt="Logo" width="200">
   </a>
 
@@ -35,9 +35,9 @@
     Backend service for Metaverse Backpack - a virtual backpack for your Metaverse assets
     <br />
     <br />
-    <a href="https://github.com/bwtp-sandox/backpack-service/issues">Report Bug</a>
+    <a href="https://github.com/bwtp-sandox/backpack-backend/issues">Report Bug</a>
     ·
-    <a href="https://github.com/bwtp-sandox/backpack-service/issues">Request Feature</a>
+    <a href="https://github.com/bwtp-sandox/backpack-backend/issues">Request Feature</a>
   </p>
 </div>
 
@@ -80,7 +80,7 @@ The backpack backend is a service that creates a virtual backpack for your asset
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/github_username/backpack-service.git
+   git clone https://github.com/github_username/backpack-backend.git
    ```
 2. Install NPM packages
    ```sh
@@ -136,7 +136,7 @@ Benedikt Wölk - [@web3woelk](https://twitter.com/web3woelk) - benedikt.woelk@pr
 
 Tobias Petrasch - [@TPetrasch](https://twitter.com/TPetrasch) - tobias.petrasch@protocol.ai
 
-Project Link: [https://github.com/bwtp-sandox/backpack-service](https://github.com/bwtp-sandox/backpack-service)
+Project Link: [https://github.com/bwtp-sandox/backpack-backend](https://github.com/bwtp-sandox/backpack-backend)
 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
@@ -145,14 +145,14 @@ Project Link: [https://github.com/bwtp-sandox/backpack-service](https://github.c
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/bwtp-sandox/backpack-service.svg?style=for-the-badge
-[contributors-url]: https://github.com/bwtp-sandox/backpack-service/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/bwtp-sandox/backpack-service.svg?style=for-the-badge
-[forks-url]: https://github.com/bwtp-sandox/backpack-service/network/members
-[stars-shield]: https://img.shields.io/github/stars/bwtp-sandox/backpack-service.svg?style=for-the-badge
-[stars-url]: https://github.com/bwtp-sandox/backpack-service/stargazers
-[issues-shield]: https://img.shields.io/github/issues/bwtp-sandox/backpack-service.svg?style=for-the-badge
-[issues-url]: https://github.com/bwtp-sandox/backpack-service/issues
-[license-shield]: https://img.shields.io/github/license/bwtp-sandox/backpack-service.svg?style=for-the-badge
-[license-url]: https://github.com/bwtp-sandox/backpack-service/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/bwtp-sandox/backpack-backend.svg?style=for-the-badge
+[contributors-url]: https://github.com/bwtp-sandox/backpack-backend/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/bwtp-sandox/backpack-backend.svg?style=for-the-badge
+[forks-url]: https://github.com/bwtp-sandox/backpack-backend/network/members
+[stars-shield]: https://img.shields.io/github/stars/bwtp-sandox/backpack-backend.svg?style=for-the-badge
+[stars-url]: https://github.com/bwtp-sandox/backpack-backend/stargazers
+[issues-shield]: https://img.shields.io/github/issues/bwtp-sandox/backpack-backend.svg?style=for-the-badge
+[issues-url]: https://github.com/bwtp-sandox/backpack-backend/issues
+[license-shield]: https://img.shields.io/github/license/bwtp-sandox/backpack-backend.svg?style=for-the-badge
+[license-url]: https://github.com/bwtp-sandox/backpack-backend/blob/master/LICENSE.txt
 [product-screenshot]: images/screenshot.png
