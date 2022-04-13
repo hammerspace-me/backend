@@ -78,12 +78,9 @@ export class BackpackController {
     @Request() req,
     @Body() createBackpackItemFromFileDto: CreateBackpackItemFromFileDto,
   ) {
-    console.log('Started');
     const createBackpackItemDto = await this.backpackService.uploadToIpfs(
       createBackpackItemFromFileDto,
     );
-    console.log('Done with upload');
-    console.log(createBackpackItemDto.content);
     const createdBackpackItem = await this.backpackService.createBackpackItem(
       createBackpackItemDto,
       req.user.address,

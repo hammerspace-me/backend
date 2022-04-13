@@ -42,7 +42,6 @@ export class BackpackService {
   public async uploadToIpfs(
     createBackpackItemFromFile: CreateBackpackItemFromFileDto,
   ): Promise<CreateBackpackItemDto> {
-    console.log(createBackpackItemFromFile.file);
     const buffer = this.dataUriToBuffer(createBackpackItemFromFile.file);
     // TODO: change to generalized form, not just RPM avatars
     const fileName = 'default.glb';
