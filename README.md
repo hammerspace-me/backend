@@ -105,8 +105,6 @@ Benedikt Wölk - [@web3woelk](https://twitter.com/web3woelk) - benedikt.woelk@pr
 
 Tobias Petrasch - [@TPetrasch](https://twitter.com/TPetrasch) - tobias.petrasch@protocol.ai
 
-Project Link: [https://github.com/bwtp-sandox/backpack-backend](https://github.com/bwtp-sandox/backpack-backend)
-
 ## Acknowledgments
 
 * [Protocol Labs](https://www.protocol.ai)
