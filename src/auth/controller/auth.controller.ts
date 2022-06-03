@@ -46,7 +46,12 @@ export class AuthController {
         'WRONG_CREDENTIALS',
       );
     }
-    const jwt = this.authService.createJwtToken(loginDto.address);
+
+    const backpack = await this.backpackService.findBackpackByOwner(
+      loginDto.address,
+    );
+
+    const jwt = this.authService.createJwtToken(loginDto.address, backpack.id);
     return res.status(HttpStatus.CREATED).json({ accessToken: jwt });
   }
 
@@ -62,12 +67,13 @@ export class AuthController {
     @Body() createNonceDto: CreateNonceDto,
   ) {
     try {
-      await this.backpackService.findBackpack(createNonceDto.backpack);
+      await this.backpackService.findBackpackByOwner(createNonceDto.owner);
     } catch (e) {
       if (e instanceof BackpackNotFoundException) {
+
         // If not existing, we create a new backpack
         const createBackpackDto: CreateBackpackDto = {
-          id: createNonceDto.backpack,
+          owner: createNonceDto.owner,
           backpackItems: [],
         };
         await this.backpackService.createBackpack(createBackpackDto);

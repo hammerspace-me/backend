@@ -8,7 +8,7 @@ export class CreateBackpackDto {
   @IsString()
   @Transform(({ value }) => value.toLowerCase())
   @IsNotEmpty()
-  readonly id: string;
+  readonly owner: string;
 
   @ApiProperty({ type: () => CreateBackpackItemDto })
   @IsArray()

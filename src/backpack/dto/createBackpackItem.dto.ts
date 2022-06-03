@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsJSON, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateBackpackItemDto {
   @ApiProperty()
@@ -16,4 +16,7 @@ export class CreateBackpackItemDto {
   @IsString()
   @IsNotEmpty()
   readonly content: string;
+
+  @ApiProperty()
+  readonly metadata: any;
 }

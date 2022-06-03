@@ -28,7 +28,9 @@ export class BackpackService {
   public async createBackpack(
     backpack: CreateBackpackDto,
   ): Promise<BackpackEntity> {
-    const checkBackpack = await this.backpackRepository.findOne(backpack.id);
+    const checkBackpack = await this.backpackRepository.findOne({
+      where: { owner: backpack.owner },
+    });
     if (checkBackpack) {
       throw new BackpackExistsException();
     }
@@ -43,14 +45,17 @@ export class BackpackService {
     createBackpackItemFromFile: CreateBackpackItemFromFileDto,
   ): Promise<CreateBackpackItemDto> {
     const buffer = this.dataUriToBuffer(createBackpackItemFromFile.file);
-    // TODO: change to generalized form, not just RPM avatars
-    const fileName = 'default.glb';
-    const file = new File([buffer], fileName);
+    const filenameWithExtension =
+      createBackpackItemFromFile.filename +
+      '.' +
+      createBackpackItemFromFile.fileExtension;
+    const file = new File([buffer], filenameWithExtension);
     const cid = await this.storeFiles(file);
     return {
       source: createBackpackItemFromFile.source,
-      content: cid,
+      content: cid + '/' + filenameWithExtension,
       category: createBackpackItemFromFile.category,
+      metadata: createBackpackItemFromFile.metadata,
     };
   }
 
@@ -64,13 +69,15 @@ export class BackpackService {
 
   public async createBackpackItem(
     createBackpackItem: CreateBackpackItemDto,
-    backpackId: string,
+    owner: string,
   ): Promise<BackpackItemEntity> {
-    const backpack = await this.findBackpack(backpackId);
+    const backpack = await this.findBackpackByOwner(owner);
     const content = createBackpackItem.content;
     const backpackItem = await this.backpackItemRepository.findOne({
-      content,
-      backpack,
+      where: {
+        content,
+        backpack,
+      },
     });
     if (backpackItem) {
       throw new BackpackItemExistsException();
@@ -85,12 +92,10 @@ export class BackpackService {
   }
 
   public async findBackpackItem(
-    content: string,
-    backpack: BackpackEntity,
+    id: string,
     withRelations?: boolean,
   ): Promise<BackpackItemEntity> {
-    // TODO: decide whether backpack items with same CID can belong to multiple backpacks (FK either content or backpack and content)
-    const properties = { where: { content, backpack } };
+    const properties = { where: { id } };
     if (withRelations) {
       properties['relations'] = ['backpack'];
     }
@@ -117,46 +122,57 @@ export class BackpackService {
     return backpack;
   }
 
+  public async findBackpackByOwner(
+    owner: string,
+    withRelations?: boolean,
+  ): Promise<BackpackEntity> {
+    const properties = { where: { owner } };
+    if (withRelations) {
+      properties['relations'] = ['backpackItems'];
+    }
+    const backpack = await this.backpackRepository.findOne(properties);
+    if (!backpack) {
+      throw new BackpackNotFoundException();
+    }
+    return backpack;
+  }
+
   public async deleteBackpackItem(
-    content: string,
-    backpackId: string,
+    backpackItemId: string,
+    owner: string,
   ): Promise<BackpackItemEntity> {
-    const backpack = await this.findBackpack(backpackId);
-    const backpackItem = await this.findBackpackItem(content, backpack, true);
-    if (backpackItem.backpack.id != backpackId) {
+    const backpackItem = await this.findBackpackItem(backpackItemId, true);
+    const backpack = await this.findBackpackByOwner(owner);
+    if (backpackItem.backpack.id != backpack.id) {
       throw new NotAuthorizedException();
     }
-    await this.backpackItemRepository.delete({ content, backpack });
+    await this.backpackItemRepository.delete({ id: backpackItemId });
     return backpackItem;
   }
 
   public async updateBackpackItem(
     updateBackpackItem: UpdateBackpackItemDto,
     backpackItemId: string,
-    backpackId: string,
+    owner: string,
   ): Promise<BackpackItemEntity> {
-    const backpack = await this.findBackpack(backpackId);
-    const backpackItem = await this.findBackpackItem(
-      backpackItemId,
-      backpack,
-      true,
-    );
+    const backpack = await this.findBackpackByOwner(owner);
+    const backpackItem = await this.findBackpackItem(backpackItemId, true);
 
-    if (backpackItem.backpack.id != backpackId) {
+    if (backpackItem.backpack.id != backpack.id) {
       throw new NotAuthorizedException();
     }
 
     await this.backpackItemRepository.update(
       {
-        content: backpackItem.content,
-        backpack: backpack,
+        id: backpackItemId,
       },
       {
         source: updateBackpackItem.source,
         category: updateBackpackItem.category,
+        metadata: updateBackpackItem.metadata,
       },
     );
 
-    return await this.findBackpackItem(backpackItemId, backpack, true);
+    return await this.findBackpackItem(backpackItemId, true);
   }
 }

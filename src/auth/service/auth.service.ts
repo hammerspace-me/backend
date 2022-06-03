@@ -17,10 +17,10 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  public async getNonce(backpack: string): Promise<NonceEntity> {
+  public async getNonce(owner: string): Promise<NonceEntity> {
     return await this.nonceRepository.findOne(
       {
-        backpack: backpack,
+        owner: owner,
       },
       {
         order: {
@@ -50,8 +50,9 @@ export class AuthService {
     return calculatedAddress.toLowerCase() == loginDto.address;
   }
 
-  public createJwtToken(address: string): string {
-    const payload = { sub: address };
+  public createJwtToken(address: string, backpackId: string): string {
+    // We add the backpack id to the payload
+    const payload = { sub: address, backpack: backpackId };
     return this.jwtService.sign(payload);
   }
 }

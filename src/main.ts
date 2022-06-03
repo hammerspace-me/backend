@@ -15,7 +15,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  //app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
   app.use(json({ limit: '500mb' }));
   app.use(urlencoded({ extended: true, limit: '500mb' }));
 

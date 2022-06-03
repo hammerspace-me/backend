@@ -11,4 +11,8 @@ export class UpdateBackpackItemDto {
   @IsString()
   @IsOptional()
   readonly source: string;
+
+  @ApiProperty()
+  @IsOptional()
+  readonly metadata: any;
 }

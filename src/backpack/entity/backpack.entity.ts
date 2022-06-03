@@ -1,10 +1,13 @@
-import { Entity, PrimaryColumn, OneToMany } from 'typeorm';
+import { Entity, OneToMany, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { BackpackItemEntity } from './backpackItem.entity';
 
 @Entity()
 export class BackpackEntity {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Column()
+  owner: string;
 
   @OneToMany(
     (type) => BackpackItemEntity,

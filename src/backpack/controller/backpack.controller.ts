@@ -11,6 +11,7 @@ import {
   Request,
   HttpCode,
   Delete,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
 import { CreateBackpackDto } from '../dto/createBackpack.dto';
@@ -25,6 +26,24 @@ export class BackpackController {
   private readonly logger = new Logger(BackpackController.name);
   constructor(private readonly backpackService: BackpackService) {}
 
+  @Get('/owner')
+  @ApiResponse({
+    status: 200,
+    description: 'Backpack has been presented successfully',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Backpack could not been found',
+  })
+  @UseGuards(JwtAuthGuard)
+  public async getBackpackByOwner(@Request() req) {
+    const backpack = await this.backpackService.findBackpackByOwner(
+      req.user.address,
+      true,
+    );
+    return backpack;
+  }
+
   @Get(':id')
   @ApiResponse({
     status: 200,
@@ -34,7 +53,7 @@ export class BackpackController {
     status: 404,
     description: 'Backpack could not been found',
   })
-  public async getBackpack(@Param('id') id: string) {
+  public async getBackpack(@Param('id', ParseUUIDPipe) id: string) {
     const backpack = await this.backpackService.findBackpack(id, true);
     return backpack;
   }
@@ -94,7 +113,10 @@ export class BackpackController {
     description: 'Backpack item has been deleted successfully',
   })
   @UseGuards(JwtAuthGuard)
-  public async deleteBackpackItem(@Request() req, @Param('id') id: string) {
+  public async deleteBackpackItem(
+    @Request() req,
+    @Param('id', ParseUUIDPipe) id: string,
+  ) {
     const backpackItem = await this.backpackService.deleteBackpackItem(
       id,
       req.user.address,
@@ -110,11 +132,9 @@ export class BackpackController {
   @UseGuards(JwtAuthGuard)
   public async updateBackpackItem(
     @Request() req,
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateBackpackItemDto: UpdateBackpackItemDto,
   ) {
-    console.log('ID ' + id);
-
     const backpackItem = await this.backpackService.updateBackpackItem(
       updateBackpackItemDto,
       id,

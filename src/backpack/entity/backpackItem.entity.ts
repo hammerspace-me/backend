@@ -1,10 +1,13 @@
-import { Exclude, Expose } from 'class-transformer';
-import { Entity, Column, PrimaryColumn, ManyToOne } from 'typeorm';
+import { Exclude } from 'class-transformer';
+import { Entity, Column, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { BackpackEntity } from './backpack.entity';
 
 @Entity()
 export class BackpackItemEntity {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column()
   content: string;
 
   @Column()
@@ -12,6 +15,12 @@ export class BackpackItemEntity {
 
   @Column()
   category: string;
+
+  @Column({
+    type: 'jsonb',
+    nullable: true,
+  })
+  public metadata: any;
 
   @ManyToOne(
     (type) => BackpackEntity,

@@ -7,7 +7,7 @@ export class CreateNonceDto {
   @IsString()
   @IsNotEmpty()
   @Transform(({ value }) => value.toLowerCase())
-  readonly backpack: string;
+  readonly owner: string;
 
   // Currently a number, but might be a (more complex) string in the future
   @IsString()

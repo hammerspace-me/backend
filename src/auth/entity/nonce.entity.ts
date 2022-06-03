@@ -12,5 +12,5 @@ export class NonceEntity {
   createdAt: Date;
 
   @Column()
-  backpack: string;
+  owner: string;
 }
