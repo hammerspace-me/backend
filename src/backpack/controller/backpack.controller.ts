@@ -58,6 +58,20 @@ export class BackpackController {
     return backpack;
   }
 
+  @Get('item/:id')
+  @ApiResponse({
+    status: 200,
+    description: 'Backpack has been presented successfully',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Backpack could not been found',
+  })
+  public async getBackpackItem(@Param('id', ParseUUIDPipe) id: string) {
+    const backpackItem = await this.backpackService.findBackpackItem(id, true);
+    return backpackItem;
+  }
+
   @Post()
   @ApiResponse({
     status: 201,
