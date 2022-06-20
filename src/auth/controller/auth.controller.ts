@@ -36,7 +36,8 @@ export class AuthController {
   @UsePipes(new ValidationPipe({ transform: true }))
   public async login(@Res() res: Response, @Body() loginDto: LoginDto) {
     const nonce = await this.authService.getNonce(loginDto.address);
-    if (!nonce || this.authService.checkNonceValidity(nonce.createdAt)) {
+    // TODO: Check for timezones and add this.authService.checkNonceValidity(nonce.createdAt)
+    if (!nonce) {
       throw new UnauthorizedException('Nonce is invalid', 'NONCE_INVALID');
     }
 
@@ -70,7 +71,6 @@ export class AuthController {
       await this.backpackService.findBackpackByOwner(createNonceDto.owner);
     } catch (e) {
       if (e instanceof BackpackNotFoundException) {
-
         // If not existing, we create a new backpack
         const createBackpackDto: CreateBackpackDto = {
           owner: createNonceDto.owner,
