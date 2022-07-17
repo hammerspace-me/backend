@@ -110,6 +110,7 @@ export class BackpackService {
     id: string,
     withRelations?: boolean,
   ): Promise<BackpackEntity> {
+    // eslint-disable-next-line @typescript-eslint/ban-types
     const properties: object = withRelations
       ? {
           relations: ['backpackItems'],
