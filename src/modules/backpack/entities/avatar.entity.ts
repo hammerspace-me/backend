@@ -1,10 +1,10 @@
-import { Entity, Column, ManyToOne } from 'typeorm';
 import { ProviderMetadata } from '@bkpk/providers';
+import { Exclude } from 'class-transformer';
+import { Entity, Column, ManyToOne } from 'typeorm';
 
-import BaseEntity from '@/entities/base.entity';
+import BaseEntity from '~/entities/base.entity';
 
 import BackpackEntity from './backpack.entity';
-import { Exclude } from 'class-transformer';
 
 type ValueOf<T> = T[keyof T];
 

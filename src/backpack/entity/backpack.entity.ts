@@ -1,4 +1,5 @@
 import { Entity, OneToMany, Column, PrimaryGeneratedColumn } from 'typeorm';
+
 import { BackpackItemEntity } from './backpackItem.entity';
 
 @Entity()

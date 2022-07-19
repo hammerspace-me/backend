@@ -1,11 +1,15 @@
-import { Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 
-import TokenEntity from '@/entities/token.entity';
-import BackpackEntity from '@/modules/backpack/entities/backpack.entity';
+import TokenEntity from '~/entities/token.entity';
+
+import BackpackEntity from '@/backpack/entities/backpack.entity';
 
 @Entity()
 export default class NonceEntity extends TokenEntity {
   @OneToOne(() => BackpackEntity)
   @JoinColumn()
-  userId: string;
+  subject?: string; // address or userId
+
+  @Column()
+  action: 'register' | 'login';
 }

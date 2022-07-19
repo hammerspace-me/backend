@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, IsEnum } from 'class-validator';
+
 import { FileExtension } from '../enum/fileExtension.enum';
 
 export class CreateBackpackItemFromFileDto {

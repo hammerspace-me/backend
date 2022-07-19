@@ -1,5 +1,6 @@
-import BaseEntity from '@/entities/base.entity';
 import { Entity, Column, OneToMany } from 'typeorm';
+
+import BaseEntity from '~/entities/base.entity';
 
 import AvatarEntity from './avatar.entity';
 

@@ -1,11 +1,14 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { LoginDto } from '../dto/login.dto';
-import { ethers } from 'ethers';
+
 import { InjectRepository } from '@nestjs/typeorm';
-import { NonceEntity } from '../entity/nonce.entity';
+import { ethers } from 'ethers';
+
 import { Repository } from 'typeorm';
+
 import { CreateNonceDto } from '../dto/createNonce.dto';
+import { LoginDto } from '../dto/login.dto';
+import { NonceEntity } from '../entity/nonce.entity';
 
 @Injectable()
 export class AuthService {

@@ -1,5 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { Entity, Column, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+
 import { BackpackEntity } from './backpack.entity';
 
 @Entity()

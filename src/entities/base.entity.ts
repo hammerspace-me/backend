@@ -3,7 +3,8 @@ import {
   Column,
   PrimaryColumn,
   BeforeInsert,
-  BeforeUpdate,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 import { generateToken } from '../utils/crypto';
@@ -13,26 +14,23 @@ export default class BaseEntity {
   @PrimaryColumn('uuid')
   id: string;
 
-  @PrimaryColumn()
-  code: string;
-
   @Column()
   expiresAt: Date;
 
-  @Column()
+  @CreateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+  })
   createdAt: Date;
 
-  @Column()
+  @UpdateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+  })
   updatedAt: Date;
-
-  @BeforeUpdate()
-  setUpdatedAt() {
-    this.updatedAt = new Date();
-  }
 
   @BeforeInsert()
   async beforeInsert() {
     this.id = await generateToken(16);
-    this.createdAt = new Date();
   }
 }

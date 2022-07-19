@@ -14,12 +14,13 @@ import {
   ParseUUIDPipe,
 } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
-import { CreateBackpackDto } from '../dto/createBackpack.dto';
-import { BackpackService } from '../service/backpack.service';
-import { CreateBackpackItemDto } from '../dto/createBackpackItem.dto';
+
 import { JwtAuthGuard } from '../../auth/guard/jwtAuth.guard';
-import { UpdateBackpackItemDto } from '../dto/updateBackpackItem.dto';
+import { CreateBackpackDto } from '../dto/createBackpack.dto';
+import { CreateBackpackItemDto } from '../dto/createBackpackItem.dto';
 import { CreateBackpackItemFromFileDto } from '../dto/createBackpackItemFromFile.dto';
+import { UpdateBackpackItemDto } from '../dto/updateBackpackItem.dto';
+import { BackpackService } from '../service/backpack.service';
 
 @Controller('backpack')
 export class BackpackController {

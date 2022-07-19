@@ -2,8 +2,8 @@
   "compilerOptions": {
     "module": "commonjs",
     "paths": {
-      "@/*": ["src/*"],
-      "~/*": ["./*"]
+      "@/*": ["src/modules/*"],
+      "~/*": ["src/*"]
     },
     "declaration": true,
     "removeComments": true,

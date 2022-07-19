@@ -1,4 +1,5 @@
 import { Column, Entity, OneToOne } from 'typeorm';
+
 import ApplicationEntity from './application.entity';
 
 import OAuthTokenEntity from './common/oauthToken.entity';

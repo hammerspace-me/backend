@@ -11,13 +11,16 @@ import {
   HttpCode,
 } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
-import { BackpackService } from '../../backpack/service/backpack.service';
-import { AuthService } from '../service/auth.service';
-import { CreateNonceDto } from '../dto/createNonce.dto';
+
 import { Response } from 'express';
+
+import { CreateBackpackDto } from '~/backpack/dto/createBackpack.dto';
+import { BackpackNotFoundException } from '~/backpack/exception/backpackNotFound.exception';
+
+import { BackpackService } from '../../backpack/service/backpack.service';
+import { CreateNonceDto } from '../dto/createNonce.dto';
 import { LoginDto } from '../dto/login.dto';
-import { BackpackNotFoundException } from 'src/backpack/exception/backpackNotFound.exception';
-import { CreateBackpackDto } from 'src/backpack/dto/createBackpack.dto';
+import { AuthService } from '../service/auth.service';
 
 @Controller()
 export class AuthController {
