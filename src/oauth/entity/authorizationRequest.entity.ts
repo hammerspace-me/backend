@@ -16,7 +16,7 @@ export default class AuthorizationRequestEntity {
   clientId: string;
 
   @Column()
-  backpackId: string;
+  owner: string;
 
   @Column()
   expiration: number;

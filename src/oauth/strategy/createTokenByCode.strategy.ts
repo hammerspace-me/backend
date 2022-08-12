@@ -31,18 +31,17 @@ export class CreateTokenByCodeStrategy implements CreateTokenStrategy {
     this.oAuthService.validateAuthorizationRequest(authorizationRequest);
     this.oAuthService.verifyState(authorizationRequest, createTokenDto.state);
 
-    const backpack = await this.backpackService.findBackpack(
-      authorizationRequest.backpackId,
-    );
+    const owner = authorizationRequest.owner;
+    const backpack = await this.backpackService.findBackpackByOwner(owner);
 
     const accessToken = this.oAuthService.createAccessToken(
-      backpack.owner,
+      owner,
       backpack.id,
       authorizationRequest.scopes,
     );
 
     const refreshToken = this.oAuthService.createRefreshToken(
-      backpack.owner,
+      owner,
       backpack.id,
       authorizationRequest.scopes,
     );

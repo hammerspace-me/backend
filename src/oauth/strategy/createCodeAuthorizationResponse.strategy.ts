@@ -1,6 +1,6 @@
 import { BackpackService } from 'src/backpack/service/backpack.service';
 import CreateAuthorizationRequestDto from '../dto/createAuthorizationRequest.dto';
-import { AccessTokenResponseDto, TokenDto } from '../dto/token.dto';
+import { AccessTokenResponseDto } from '../dto/token.dto';
 import AuthorizationRequestEntity from '../entity/authorizationRequest.entity';
 import { OAuthService } from '../service/oAuth.service';
 import { CreateAuthorizationResponseStrategy } from './createAuthorizationResponse.strategy';
@@ -25,13 +25,11 @@ export class CreateCodeAuthroizationResponseStrategy
     createAuthorizationRequest: CreateAuthorizationRequestDto,
     owner: string,
   ): Promise<AuthorizationRequestEntity | AccessTokenResponseDto> {
-    const backpack = await this.backpackService.findBackpackByOwner(owner);
-
     const authorizationRequest =
       await this.oAuthService.createAuthorizationRequest(
         createAuthorizationRequest,
         this.generateAuthorizationCodeStrategy,
-        backpack,
+        owner,
       );
 
     return authorizationRequest;

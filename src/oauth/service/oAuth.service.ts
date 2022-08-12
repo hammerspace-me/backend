@@ -36,19 +36,45 @@ export class OAuthService {
   public async createAuthorizationRequest(
     authorizationRequest: CreateAuthorizationRequestDto,
     authorizationCodeStrategy: GenerateAuthorizationCodeStrategy,
-    backpack: BackpackEntity,
+    owner: string,
   ): Promise<AuthorizationRequestEntity> {
     const createAuthorizationRequest =
       this.authorizationRequestRepository.create({
         ...authorizationRequest,
         authorizationCode:
           authorizationCodeStrategy.generateAuthorizationCode(),
-        backpackId: backpack.id,
+        owner: owner,
         expiration: 600, // in seconds
         valid: true,
       });
 
     return this.authorizationRequestRepository.save(createAuthorizationRequest);
+  }
+
+  public async confirmAuthorizationRequest(
+    id: string,
+    authorizationCodeStrategy: GenerateAuthorizationCodeStrategy,
+  ): Promise<AuthorizationRequestEntity> {
+    await this.authorizationRequestRepository.update(id, {
+      authorizationCode: authorizationCodeStrategy.generateAuthorizationCode(),
+      confirmed: true,
+    });
+
+    const confirmedAuthorizationRequest = await this.findAuthorizationRequest(
+      id,
+    );
+
+    return confirmedAuthorizationRequest;
+  }
+
+  public async ensureOwnershipOfAuthorizationRequest(
+    id: string,
+    owner: string,
+  ) {
+    const authorizationRequest = await this.findAuthorizationRequest(id);
+    if (authorizationRequest.owner !== owner) {
+      throw new InvalidOwnerException();
+    }
   }
 
   public async findAuthorizationRequest(
