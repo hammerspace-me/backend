@@ -1,10 +1,10 @@
 import { CreateTokenDto } from '../dto/createToken.dto';
-import { TokenDto } from '../dto/token.dto';
+import { TokenResponseDto } from '../dto/tokenResponse.dto';
 
 export interface CreateTokenStrategy {
   createToken(
     createToken: CreateTokenDto,
     tokenType: string,
     expiresIn: number,
-  ): Promise<TokenDto>;
+  ): Promise<TokenResponseDto>;
 }

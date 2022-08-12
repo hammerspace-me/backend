@@ -1,6 +1,6 @@
 import { BackpackService } from 'src/backpack/service/backpack.service';
 import { CreateTokenDto } from '../dto/createToken.dto';
-import { TokenDto } from '../dto/token.dto';
+import { TokenResponseDto } from '../dto/tokenResponse.dto';
 import { OAuthService } from '../service/oAuth.service';
 import { CreateTokenStrategy } from './createToken.strategy';
 
@@ -17,7 +17,7 @@ export class CreateTokenByCodeStrategy implements CreateTokenStrategy {
     createTokenDto: CreateTokenDto,
     tokenType: string,
     expiresIn: number,
-  ): Promise<TokenDto> {
+  ): Promise<TokenResponseDto> {
     await this.oAuthService.verifyClientIdAndSecret(
       createTokenDto.clientId,
       createTokenDto.clientSecret,
@@ -28,24 +28,34 @@ export class CreateTokenByCodeStrategy implements CreateTokenStrategy {
         createTokenDto.code,
       );
 
-    this.oAuthService.validateAuthorizationRequest(authorizationRequest);
+    await this.oAuthService.validateAuthorizationRequest(authorizationRequest);
     this.oAuthService.verifyState(authorizationRequest, createTokenDto.state);
 
-    const owner = authorizationRequest.owner;
+    const invalidatedAuthorizationRequest =
+      await this.oAuthService.invalidateAuthorizationRequest(
+        authorizationRequest,
+      );
+
+    const owner = invalidatedAuthorizationRequest.owner;
     const backpack = await this.backpackService.findBackpackByOwner(owner);
 
     const accessToken = this.oAuthService.createAccessToken(
       owner,
       backpack.id,
-      authorizationRequest.scopes,
+      invalidatedAuthorizationRequest.scopes,
     );
 
     const refreshToken = this.oAuthService.createRefreshToken(
       owner,
       backpack.id,
-      authorizationRequest.scopes,
+      invalidatedAuthorizationRequest.scopes,
     );
 
-    return new TokenDto(tokenType, accessToken, expiresIn, refreshToken);
+    return new TokenResponseDto(
+      tokenType,
+      accessToken,
+      expiresIn,
+      refreshToken,
+    );
   }
 }

@@ -13,16 +13,16 @@ export default class AuthorizationRequestEntity {
   id: string;
 
   @Column()
+  responseType: string;
+
+  @Column()
   clientId: string;
 
   @Column()
   owner: string;
 
-  @Column()
-  expiration: number;
-
-  @Column()
-  authorizationCode: string;
+  @Column({ nullable: true })
+  authorizationCode?: string;
 
   @Column('enum', { array: true, enum: Scopes, default: [] })
   scopes: Scopes[];

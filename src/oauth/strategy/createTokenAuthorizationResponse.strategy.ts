@@ -1,6 +1,6 @@
 import { BackpackService } from 'src/backpack/service/backpack.service';
-import CreateAuthorizationRequestDto from '../dto/createAuthorizationRequest.dto';
-import { AccessTokenResponseDto } from '../dto/token.dto';
+import { AuthorizationCodeResponseDto } from '../dto/authorizationCodeResponse.dto';
+import { AccessTokenResponseDto } from '../dto/accessTokenResponse.dto';
 import AuthorizationRequestEntity from '../entity/authorizationRequest.entity';
 import { OAuthService } from '../service/oAuth.service';
 import { CreateAuthorizationResponseStrategy } from './createAuthorizationResponse.strategy';
@@ -17,19 +17,25 @@ export class CreateTokenAuthorizationResponseStrategy
   }
 
   public async createAuthorizationResponse(
-    createAuthorizationRequest: CreateAuthorizationRequestDto,
-    owner: string,
-  ): Promise<AuthorizationRequestEntity | AccessTokenResponseDto> {
-    const backpack = await this.backpackService.findBackpackByOwner(owner);
+    authorizationRequest: AuthorizationRequestEntity,
+  ): Promise<AuthorizationCodeResponseDto | AccessTokenResponseDto> {
+    const invalidatedAuthorizationRequest =
+      await this.oAuthService.invalidateAuthorizationRequest(
+        authorizationRequest,
+      );
+
+    const backpack = await this.backpackService.findBackpackByOwner(
+      invalidatedAuthorizationRequest.owner,
+    );
     const accessToken = new AccessTokenResponseDto(
       'Bearer',
       this.oAuthService.createAccessToken(
-        owner,
+        invalidatedAuthorizationRequest.owner,
         backpack.id,
-        createAuthorizationRequest.scopes,
+        invalidatedAuthorizationRequest.scopes,
       ),
       900,
-      createAuthorizationRequest.state,
+      invalidatedAuthorizationRequest.state,
     );
     return accessToken;
   }

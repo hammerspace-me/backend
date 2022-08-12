@@ -1,6 +1,6 @@
 import { BackpackService } from 'src/backpack/service/backpack.service';
 import { CreateTokenDto } from '../dto/createToken.dto';
-import { TokenDto } from '../dto/token.dto';
+import { TokenResponseDto } from '../dto/tokenResponse.dto';
 import { OAuthService } from '../service/oAuth.service';
 import { CreateTokenStrategy } from './createToken.strategy';
 
@@ -17,7 +17,7 @@ export class CreateTokenByRefreshStrategy implements CreateTokenStrategy {
     createTokenDto: CreateTokenDto,
     tokenType: string,
     expiresIn: number,
-  ): Promise<TokenDto> {
+  ): Promise<TokenResponseDto> {
     await this.oAuthService.verifyClientIdAndSecret(
       createTokenDto.clientId,
       createTokenDto.clientSecret,
@@ -44,6 +44,11 @@ export class CreateTokenByRefreshStrategy implements CreateTokenStrategy {
       refreshTokenPayload.scopes.split(' '),
     );
 
-    return new TokenDto(tokenType, accessToken, expiresIn, refreshToken);
+    return new TokenResponseDto(
+      tokenType,
+      accessToken,
+      expiresIn,
+      refreshToken,
+    );
   }
 }

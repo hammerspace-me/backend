@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BackpackEntity } from 'src/backpack/entity/backpack.entity';
 import { Repository } from 'typeorm';
 import CreateActivationRequestDto from '../dto/createActivationRequest.dto';
 import CreateAuthorizationRequestDto from '../dto/createAuthorizationRequest.dto';
@@ -11,6 +10,8 @@ import ActivationRequestEntity from '../entity/activationRequest.entity';
 import ApplicationEntity from '../entity/application.entity';
 import AuthorizationRequestEntity from '../entity/authorizationRequest.entity';
 import { ActivationRequestNotFoundException } from '../exception/activationRequestNotFound.exception';
+import { AuthorizationRequestAlreadyConfirmedException } from '../exception/authorizationRequestAlreadyConfirmed.exception';
+import { AuthorizationRequestAlreadyInvalidException } from '../exception/authorizationRequestAlreadyInvalid.exception';
 import { AuthorizationRequestNotFoundException } from '../exception/authorizationRequestNotFound.exception';
 import { ClientNotFoundException } from '../exception/clientNotFound.exception';
 import { InvalidAuthorizationRequestException } from '../exception/invalidAuthorizationRequest.exception';
@@ -35,16 +36,12 @@ export class OAuthService {
 
   public async createAuthorizationRequest(
     authorizationRequest: CreateAuthorizationRequestDto,
-    authorizationCodeStrategy: GenerateAuthorizationCodeStrategy,
     owner: string,
   ): Promise<AuthorizationRequestEntity> {
     const createAuthorizationRequest =
       this.authorizationRequestRepository.create({
         ...authorizationRequest,
-        authorizationCode:
-          authorizationCodeStrategy.generateAuthorizationCode(),
         owner: owner,
-        expiration: 600, // in seconds
         valid: true,
       });
 
@@ -52,19 +49,41 @@ export class OAuthService {
   }
 
   public async confirmAuthorizationRequest(
-    id: string,
+    authorizationRequest: AuthorizationRequestEntity,
     authorizationCodeStrategy: GenerateAuthorizationCodeStrategy,
   ): Promise<AuthorizationRequestEntity> {
-    await this.authorizationRequestRepository.update(id, {
+    if (authorizationRequest.confirmed) {
+      throw new AuthorizationRequestAlreadyConfirmedException();
+    }
+
+    await this.authorizationRequestRepository.update(authorizationRequest.id, {
       authorizationCode: authorizationCodeStrategy.generateAuthorizationCode(),
       confirmed: true,
     });
 
     const confirmedAuthorizationRequest = await this.findAuthorizationRequest(
-      id,
+      authorizationRequest.id,
     );
 
     return confirmedAuthorizationRequest;
+  }
+
+  public async invalidateAuthorizationRequest(
+    authorizationRequest: AuthorizationRequestEntity,
+  ): Promise<AuthorizationRequestEntity> {
+    if (!authorizationRequest.valid) {
+      throw new AuthorizationRequestAlreadyInvalidException();
+    }
+
+    await this.authorizationRequestRepository.update(authorizationRequest.id, {
+      valid: false,
+    });
+
+    const invalidatedAuthorizationRequest = await this.findAuthorizationRequest(
+      authorizationRequest.id,
+    );
+
+    return invalidatedAuthorizationRequest;
   }
 
   public async ensureOwnershipOfAuthorizationRequest(
@@ -104,8 +123,7 @@ export class OAuthService {
   public async validateAuthorizationRequest(
     authorizationRequest: AuthorizationRequestEntity,
   ) {
-    const expirationTimestamp =
-      Date.now() - authorizationRequest.expiration * 1000;
+    const expirationTimestamp = Date.now() - 600 * 1000;
     const expired =
       authorizationRequest.createdAt.getTime() > expirationTimestamp;
 

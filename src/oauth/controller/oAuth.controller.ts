@@ -9,8 +9,6 @@ import {
   Get,
   Param,
   ParseUUIDPipe,
-  UsePipes,
-  ValidationPipe,
   UseInterceptors,
   ClassSerializerInterceptor,
 } from '@nestjs/common';
@@ -30,6 +28,9 @@ import { CreateTokenByRefreshStrategy } from '../strategy/createTokenByRefresh.s
 import CreateActivationRequestDto from '../dto/createActivationRequest.dto';
 import UpdateActivationRequestDto from '../dto/updateActivationRequest.dto';
 import { CreateCodeAuthorizationResponseStrategy } from '../strategy/createCodeAuthorizationResponse.strategy';
+import { AuthorizationCodeResponseDto } from '../dto/authorizationCodeResponse.dto';
+import { AccessTokenResponseDto } from '../dto/accessTokenResponse.dto';
+import AuthorizationRequestEntity from '../entity/authorizationRequest.entity';
 
 @Controller('oauth')
 export default class OAuthController {
@@ -50,14 +51,39 @@ export default class OAuthController {
   public async createAuthorizationRequest(
     @Request() req,
     @Body() createAuthorizationRequestDto: CreateAuthorizationRequestDto,
-  ) {
+  ): Promise<AuthorizationRequestEntity> {
     const owner = req.user.address;
-    const responseType = createAuthorizationRequestDto.responseType;
 
     await this.oAuthService.ensureClientIdExists(
       createAuthorizationRequestDto.clientId,
     );
 
+    const createdAuthorizationRequest =
+      await this.oAuthService.createAuthorizationRequest(
+        createAuthorizationRequestDto,
+        owner,
+      );
+
+    return createdAuthorizationRequest;
+  }
+
+  @Post('authorize/:id')
+  @ApiResponse({
+    status: 200,
+    description: 'Authorization request has been confirmed successfully',
+  })
+  @HttpCode(200)
+  @UseGuards(JwtAuthGuard)
+  public async confirmAuthorizationRequest(
+    @Request() req,
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<AuthorizationCodeResponseDto | AccessTokenResponseDto> {
+    const owner = req.user.address;
+    await this.oAuthService.ensureOwnershipOfAuthorizationRequest(id, owner);
+    const authorizationRequest =
+      await this.oAuthService.findAuthorizationRequest(id);
+
+    const responseType = authorizationRequest.responseType;
     let createAuthorizationResponseStrategy: CreateAuthorizationResponseStrategy;
     if (responseType === 'token') {
       createAuthorizationResponseStrategy =
@@ -67,10 +93,7 @@ export default class OAuthController {
         );
     } else if (responseType === 'code') {
       createAuthorizationResponseStrategy =
-        new CreateCodeAuthorizationResponseStrategy(
-          this.oAuthService,
-          this.backpackService,
-        );
+        new CreateCodeAuthorizationResponseStrategy(this.oAuthService);
     }
 
     if (!createAuthorizationResponseStrategy) {
@@ -78,12 +101,12 @@ export default class OAuthController {
     }
 
     return createAuthorizationResponseStrategy.createAuthorizationResponse(
-      createAuthorizationRequestDto,
-      owner,
+      authorizationRequest,
     );
   }
 
   @Post('activation')
+  @HttpCode(201)
   public async createActivation(
     @Body() createActivationRequest: CreateActivationRequestDto,
   ) {
@@ -106,6 +129,7 @@ export default class OAuthController {
   }
 
   @Post('activation/:code')
+  @HttpCode(200)
   @UseGuards(JwtAuthGuard)
   public async updateActivation(
     @Request() req,
