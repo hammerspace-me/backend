@@ -1,5 +1,12 @@
 import { Exclude } from 'class-transformer';
-import { Entity, Column, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+  CreateDateColumn,
+} from 'typeorm';
 import { BackpackEntity } from './backpack.entity';
 
 @Entity()
@@ -32,4 +39,10 @@ export class BackpackItemEntity {
   )
   @Exclude()
   backpack: BackpackEntity;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

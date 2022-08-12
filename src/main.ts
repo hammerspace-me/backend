@@ -17,7 +17,6 @@ async function bootstrap() {
 
   app.use(json({ limit: '500mb' }));
   app.use(urlencoded({ extended: true, limit: '500mb' }));
-
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors();
   await app.listen(process.env.PORT || 3000);

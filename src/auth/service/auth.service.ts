@@ -6,6 +6,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { NonceEntity } from '../entity/nonce.entity';
 import { Repository } from 'typeorm';
 import { CreateNonceDto } from '../dto/createNonce.dto';
+import { ConfigService } from '@nestjs/config';
+import { Scopes } from 'src/oauth/enum/scopes.enum';
 
 @Injectable()
 export class AuthService {
@@ -13,8 +15,9 @@ export class AuthService {
 
   constructor(
     @InjectRepository(NonceEntity)
-    private nonceRepository: Repository<NonceEntity>,
-    private jwtService: JwtService,
+    private readonly nonceRepository: Repository<NonceEntity>,
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
   ) {}
 
   public async getNonce(owner: string): Promise<NonceEntity> {
@@ -51,8 +54,18 @@ export class AuthService {
   }
 
   public createJwtToken(address: string, backpackId: string): string {
-    // We add the backpack id to the payload
-    const payload = { sub: address, backpack: backpackId };
-    return this.jwtService.sign(payload);
+    const payload = {
+      sub: address,
+      backpack: backpackId,
+      scopes: [
+        Scopes['avatars:read'],
+        Scopes['avatars:create'],
+        Scopes['avatars:update'],
+        Scopes['avatars:delete'],
+      ],
+    };
+    return this.jwtService.sign(payload, {
+      expiresIn: this.configService.get('JWT_EXPIRES_IN'),
+    });
   }
 }
