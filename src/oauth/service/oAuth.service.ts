@@ -44,7 +44,7 @@ export class OAuthService {
         authorizationCode:
           authorizationCodeStrategy.generateAuthorizationCode(),
         backpackId: backpack.id,
-        expiration: 900, // in seconds
+        expiration: 600, // in seconds
         valid: true,
       });
 
