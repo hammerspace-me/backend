@@ -7,7 +7,7 @@ import { CreateAuthorizationResponseStrategy } from './createAuthorizationRespon
 import { GenerateAuthorizationCodeStrategy } from './generateAuthorizationCode.strategy';
 import { GenerateAuthorizationCodeTokenStrategy } from './generateAuthorizationCodeToken.strategy';
 
-export class CreateCodeAuthroizationResponseStrategy
+export class CreateCodeAuthorizationResponseStrategy
   implements CreateAuthorizationResponseStrategy
 {
   private readonly generateAuthorizationCodeStrategy: GenerateAuthorizationCodeStrategy;

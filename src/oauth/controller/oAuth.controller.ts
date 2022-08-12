@@ -29,6 +29,7 @@ import { CreateTokenByCodeStrategy } from '../strategy/createTokenByCode.strateg
 import { CreateTokenByRefreshStrategy } from '../strategy/createTokenByRefresh.strategy';
 import CreateActivationRequestDto from '../dto/createActivationRequest.dto';
 import UpdateActivationRequestDto from '../dto/updateActivationRequest.dto';
+import { CreateCodeAuthorizationResponseStrategy } from '../strategy/createCodeAuthorizationResponse.strategy';
 
 @Controller('oauth')
 export default class OAuthController {
@@ -66,7 +67,7 @@ export default class OAuthController {
         );
     } else if (responseType === 'code') {
       createAuthorizationResponseStrategy =
-        new CreateTokenAuthorizationResponseStrategy(
+        new CreateCodeAuthorizationResponseStrategy(
           this.oAuthService,
           this.backpackService,
         );
