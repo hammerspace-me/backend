@@ -170,15 +170,6 @@ export class OAuthService {
     });
   }
 
-  public async ensureClientIdExists(clientId: string): Promise<void> {
-    const id = clientId;
-    const application = await this.applicationRepository.findOne(id);
-
-    if (!application) {
-      throw new ClientNotFoundException();
-    }
-  }
-
   public async verifyClientIdAndSecret(
     clientId: string,
     clientSecret: string,
@@ -194,15 +185,9 @@ export class OAuthService {
   }
 
   public async validateRedirectUri(
-    clientId: string,
+    application: ApplicationEntity,
     redirectUri: string,
   ): Promise<void> {
-    const id = clientId;
-    const application = await this.applicationRepository.findOne(id);
-    if (!application) {
-      throw new ClientNotFoundException();
-    }
-
     if (redirectUri && redirectUri !== application.redirectUri) {
       throw new InvalidRedirectUriException();
     }

@@ -31,7 +31,6 @@ import { CreateCodeAuthorizationResponseStrategy } from '../strategy/createCodeA
 import { AuthorizationCodeResponseDto } from '../dto/authorizationCodeResponse.dto';
 import { AccessTokenResponseDto } from '../dto/accessTokenResponse.dto';
 import AuthorizationRequestEntity from '../entity/authorizationRequest.entity';
-import { create } from 'domain';
 
 @Controller('oauth')
 export default class OAuthController {
@@ -55,12 +54,12 @@ export default class OAuthController {
   ): Promise<AuthorizationRequestEntity> {
     const owner = req.user.address;
 
-    await this.oAuthService.ensureClientIdExists(
+    const application = await this.oAuthService.findApplication(
       createAuthorizationRequestDto.clientId,
     );
 
     await this.oAuthService.validateRedirectUri(
-      createAuthorizationRequestDto.clientId,
+      application,
       createAuthorizationRequestDto.redirectUri,
     );
 
@@ -69,6 +68,10 @@ export default class OAuthController {
         createAuthorizationRequestDto,
         owner,
       );
+
+    if (!createdAuthorizationRequest.redirectUri) {
+      createdAuthorizationRequest.redirectUri = application.redirectUri;
+    }
 
     return createdAuthorizationRequest;
   }
@@ -116,9 +119,9 @@ export default class OAuthController {
   public async createActivation(
     @Body() createActivationRequest: CreateActivationRequestDto,
   ) {
-    await this.oAuthService.ensureClientIdExists(
-      createActivationRequest.clientId,
-    );
+    // Note: this ensures that the application exists
+    await this.oAuthService.findApplication(createActivationRequest.clientId);
+
     return this.oAuthService.createActivation(createActivationRequest);
   }
 

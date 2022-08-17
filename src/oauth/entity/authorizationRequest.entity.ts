@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import {
   Column,
   CreateDateColumn,
@@ -35,6 +36,9 @@ export default class AuthorizationRequestEntity {
 
   @Column({ default: false })
   confirmed: boolean;
+
+  @Column({ nullable: true })
+  redirectUri?: string;
 
   @CreateDateColumn()
   createdAt: Date;
