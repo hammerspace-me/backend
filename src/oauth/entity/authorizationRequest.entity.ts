@@ -27,8 +27,8 @@ export default class AuthorizationRequestEntity {
   @Column('enum', { array: true, enum: Scopes, default: [] })
   scopes: Scopes[];
 
-  @Column()
-  state: string | null;
+  @Column({ nullable: true })
+  state?: string;
 
   @Column({ default: true })
   valid: boolean;
