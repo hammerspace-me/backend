@@ -25,6 +25,9 @@ export default class ApplicationEntity {
   @Column()
   banner: string;
 
+  @Column()
+  redirectUri: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

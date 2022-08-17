@@ -31,6 +31,7 @@ import { CreateCodeAuthorizationResponseStrategy } from '../strategy/createCodeA
 import { AuthorizationCodeResponseDto } from '../dto/authorizationCodeResponse.dto';
 import { AccessTokenResponseDto } from '../dto/accessTokenResponse.dto';
 import AuthorizationRequestEntity from '../entity/authorizationRequest.entity';
+import { create } from 'domain';
 
 @Controller('oauth')
 export default class OAuthController {
@@ -56,6 +57,11 @@ export default class OAuthController {
 
     await this.oAuthService.ensureClientIdExists(
       createAuthorizationRequestDto.clientId,
+    );
+
+    await this.oAuthService.validateRedirectUri(
+      createAuthorizationRequestDto.clientId,
+      createAuthorizationRequestDto.redirectUri,
     );
 
     const createdAuthorizationRequest =

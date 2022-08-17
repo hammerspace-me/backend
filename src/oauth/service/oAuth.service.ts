@@ -17,6 +17,7 @@ import { ClientNotFoundException } from '../exception/clientNotFound.exception';
 import { InvalidAuthorizationRequestException } from '../exception/invalidAuthorizationRequest.exception';
 import { InvalidClientCredentialsException } from '../exception/invalidClientCredentials.exception';
 import { InvalidOwnerException } from '../exception/invalidOwner.exception';
+import { InvalidRedirectUriException } from '../exception/invalidRedirectUri.exception';
 import { InvalidStateException } from '../exception/invalidState.exception';
 import { GenerateAuthorizationCodeStrategy } from '../strategy/generateAuthorizationCode.strategy';
 import { generateActivationCode } from '../utils/activationCode.utils';
@@ -189,6 +190,21 @@ export class OAuthService {
 
     if (application.clientSecret !== clientSecret) {
       throw new InvalidClientCredentialsException();
+    }
+  }
+
+  public async validateRedirectUri(
+    clientId: string,
+    redirectUri: string,
+  ): Promise<void> {
+    const id = clientId;
+    const application = await this.applicationRepository.findOne(id);
+    if (!application) {
+      throw new ClientNotFoundException();
+    }
+
+    if (redirectUri && redirectUri !== application.redirectUri) {
+      throw new InvalidRedirectUriException();
     }
   }
 
