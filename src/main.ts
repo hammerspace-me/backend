@@ -7,10 +7,9 @@ import { urlencoded, json } from 'express';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const config = new DocumentBuilder()
-    .setTitle('Avatar service')
-    .setDescription('Service to provide IPFS assets for Metamask users')
-    .setVersion('1.0')
-    .addTag('avatar')
+    .setTitle('Backpack backend')
+    .setDescription('Service to manage virtual backpacks for users')
+    .setVersion('0.1')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

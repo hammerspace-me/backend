@@ -19,13 +19,13 @@ export class CreateTokenByRefreshStrategy implements CreateTokenStrategy {
     expiresIn: number,
   ): Promise<TokenResponseDto> {
     await this.oAuthService.verifyClientIdAndSecret(
-      createTokenDto.clientId,
-      createTokenDto.clientSecret,
+      createTokenDto.client_id,
+      createTokenDto.client_secret,
     );
 
     const refreshTokenPayload =
       this.oAuthService.validateRefreshTokenAndExtractPayload(
-        createTokenDto.refreshToken,
+        createTokenDto.refresh_token,
       );
 
     const backpack = await this.backpackService.findBackpackByOwner(

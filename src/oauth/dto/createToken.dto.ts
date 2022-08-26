@@ -1,28 +1,21 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsEnum,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  IsUUID,
-} from 'class-validator';
+import { IsEnum, IsOptional, IsString, IsUUID } from 'class-validator';
 import { GrantType } from '../enum/grantType.enum';
 
 export class CreateTokenDto {
   @ApiProperty()
   @IsString()
   @IsUUID()
-  @IsNotEmpty()
-  clientId: string;
+  client_id: string;
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
-  clientSecret: string;
+  client_secret: string;
 
   @ApiProperty()
+  @IsString()
   @IsEnum(GrantType)
-  grantType: GrantType;
+  grant_type: string;
 
   @ApiProperty()
   @IsString()
@@ -37,5 +30,5 @@ export class CreateTokenDto {
   @ApiProperty()
   @IsString()
   @IsOptional()
-  refreshToken: string;
+  refresh_token: string;
 }

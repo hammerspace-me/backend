@@ -16,7 +16,6 @@ import { ApiResponse } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guard/jwtAuth.guard';
 import { BackpackService } from 'src/backpack/service/backpack.service';
 import CreateAuthorizationRequestDto from '../dto/createAuthorizationRequest.dto';
-import { CreateTokenDto } from '../dto/createToken.dto';
 import { InvalidGrantTypeException } from '../exception/invalidGrantType.exception';
 import { InvalidResponseTypeException } from '../exception/invalidResponseType.exception';
 import { OAuthService } from '../service/oAuth.service';
@@ -31,6 +30,7 @@ import { CreateCodeAuthorizationResponseStrategy } from '../strategy/createCodeA
 import { AuthorizationCodeResponseDto } from '../dto/authorizationCodeResponse.dto';
 import { AccessTokenResponseDto } from '../dto/accessTokenResponse.dto';
 import AuthorizationRequestEntity from '../entity/authorizationRequest.entity';
+import { CreateTokenDto } from '../dto/createToken.dto';
 
 @Controller('oauth')
 export default class OAuthController {
@@ -115,29 +115,44 @@ export default class OAuthController {
   }
 
   @Post('activation')
+  @ApiResponse({
+    status: 201,
+    description: 'Activation request has been created successfully',
+  })
   @HttpCode(201)
   public async createActivation(
     @Body() createActivationRequest: CreateActivationRequestDto,
   ) {
     // Note: this ensures that the application exists
     await this.oAuthService.findApplication(createActivationRequest.clientId);
-
     return this.oAuthService.createActivation(createActivationRequest);
   }
 
   @Get('activation/:code')
+  @ApiResponse({
+    status: 200,
+    description: 'Activation request has been presented successfully',
+  })
   @UseInterceptors(ClassSerializerInterceptor)
   public async getActivation(@Param('code') code: string) {
     return this.oAuthService.findActivation(code);
   }
 
   @Get('application/:id')
+  @ApiResponse({
+    status: 200,
+    description: 'Application has been presented successfully',
+  })
   @UseInterceptors(ClassSerializerInterceptor)
   public async getApplication(@Param('id', ParseUUIDPipe) id: string) {
     return this.oAuthService.findApplication(id);
   }
 
   @Post('activation/:code')
+  @ApiResponse({
+    status: 200,
+    description: 'Activation request has been updated successfully',
+  })
   @HttpCode(200)
   @UseGuards(JwtAuthGuard)
   public async updateActivation(
@@ -157,23 +172,20 @@ export default class OAuthController {
   @Post('token')
   @ApiResponse({
     status: 201,
-    description: 'Token has been requested successfully',
+    description: 'Token has been created successfully',
   })
   @HttpCode(201)
-  public async createToken(
-    @Body()
-    createToken: CreateTokenDto,
-  ) {
+  public async createToken(@Body() createToken: CreateTokenDto) {
     const tokenType = 'Bearer';
     const expiresIn = 900;
 
     let createTokenStrategy: CreateTokenStrategy;
-    if (createToken.grantType === 'authorization_code') {
+    if (createToken.grant_type === 'authorization_code') {
       createTokenStrategy = new CreateTokenByCodeStrategy(
         this.oAuthService,
         this.backpackService,
       );
-    } else if (createToken.grantType === 'refresh_token') {
+    } else if (createToken.grant_type === 'refresh_token') {
       createTokenStrategy = new CreateTokenByRefreshStrategy(
         this.oAuthService,
         this.backpackService,
@@ -184,6 +196,17 @@ export default class OAuthController {
       throw new InvalidGrantTypeException();
     }
 
-    return createTokenStrategy.createToken(createToken, tokenType, expiresIn);
+    const token = await createTokenStrategy.createToken(
+      createToken,
+      tokenType,
+      expiresIn,
+    );
+
+    return {
+      access_token: token.accessToken,
+      expires_in: token.expiresIn,
+      refresh_token: token.refreshToken,
+      token_type: token.tokenType,
+    };
   }
 }

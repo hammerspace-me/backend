@@ -19,8 +19,8 @@ export class CreateTokenByCodeStrategy implements CreateTokenStrategy {
     expiresIn: number,
   ): Promise<TokenResponseDto> {
     await this.oAuthService.verifyClientIdAndSecret(
-      createTokenDto.clientId,
-      createTokenDto.clientSecret,
+      createTokenDto.client_id,
+      createTokenDto.client_secret,
     );
 
     const authorizationRequest =
@@ -29,7 +29,7 @@ export class CreateTokenByCodeStrategy implements CreateTokenStrategy {
       );
 
     await this.oAuthService.validateAuthorizationRequest(authorizationRequest);
-    this.oAuthService.verifyState(authorizationRequest, createTokenDto.state);
+    //this.oAuthService.verifyState(authorizationRequest, createTokenDto.state);
 
     const invalidatedAuthorizationRequest =
       await this.oAuthService.invalidateAuthorizationRequest(
