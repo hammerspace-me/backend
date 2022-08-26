@@ -19,6 +19,7 @@ import { OAuthModule } from './oauth/oAuth.module';
           password: configService.get('POSTGRES_PASSWORD'),
           database: configService.get('POSTGRES_DATABASE'),
           entities: [__dirname + '/**/*.entity{.ts,.js}'],
+          timezone: 'Z',
           synchronize: true,
         };
 
