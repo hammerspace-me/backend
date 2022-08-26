@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { BackpackModule } from './backpack/backpack.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { OAuthModule } from './oauth/oAuth.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { AuthModule } from './auth/auth.module';
     }),
     BackpackModule,
     AuthModule,
+    OAuthModule,
   ],
 })
 export class AppModule {}

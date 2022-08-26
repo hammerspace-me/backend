@@ -1,4 +1,11 @@
-import { Entity, OneToMany, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  OneToMany,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { BackpackItemEntity } from './backpackItem.entity';
 
 @Entity()
@@ -15,4 +22,10 @@ export class BackpackEntity {
     { cascade: ['insert', 'update'] },
   )
   backpackItems: BackpackItemEntity[];
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

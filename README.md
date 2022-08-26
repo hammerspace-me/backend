@@ -19,32 +19,33 @@ The backpack backend is a service that creates a virtual backpack for your asset
 
 ### Prerequisites
 
-* npm
+- npm
 
   Install npm as the service is based on NodeJS and uses npm as a package manager.
-  *NOTE:* This installation command requires [brew](https://brew.sh/) and only runs on Mac.
+  _NOTE:_ This installation command requires [brew](https://brew.sh/) and only runs on Mac.
 
   ```sh
   $ brew install node
   ```
 
-* Docker
+- Docker
 
   Install docker as the service requires a database for persistent storage.
-  *NOTE:* This installation command requires [brew](https://brew.sh/) and only runs on Mac.
+  _NOTE:_ This installation command requires [brew](https://brew.sh/) and only runs on Mac.
 
   ```sh
   brew cask install docker
   ```
 
-* Environment
+- Environment
 
   Rename the environment file and add your credentials. Environment file is read by NestJS and Docker.
+
   ```sh
   mv .env.example .env
   ```
 
-* Web3.Storage account and API token
+- Web3.Storage account and API token
 
   In order to use web3.storage you need an API key. First, head over to [web3.storage](https://web3.storage) to login with your email address. You will receive an email with a magic link that signs you in – no password needed. After you successfully logged in, go to API Keys via the account section of the navigation bar. You will find a button to Create a new token. When prompted for an API key name, you can freely choose one or use “Backpack”. Copy the content of the key column to your .env file.
 
@@ -62,11 +63,14 @@ The backpack backend is a service that creates a virtual backpack for your asset
 ## Usage
 
 The backpack backend consists of two components: the backend service and the database. First start the database with the following command:
+
 ```bash
 # Start up the development database
 $ npm run start:db
 ```
+
 When the database is running, start the backend service with the following command:
+
 ```bash
 # Start service in watch mode (automatically reload if files change)
 $ npm run start:dev
@@ -81,6 +85,10 @@ $ npm run start
 # Build service in production mode and run
 $ npm run start:prod
 ```
+
+## Known Issues
+
+- Backend service fails to start when changes are made to the database model: Currently there is no proper database migration management implemented. Whenever the database entities are changed, there is the possibility of a crash of the backend service as the database model differs from the database itself. To resolve the issue, the database can be removed and re-deployed, either by removing the old container and starting a new one (`docker-compose stop db`, `docker-compose rm db`, `docker-compose up -d db`) or by using a tool/CLI to interact with the database and purge it completely.
 
 ## Contributing
 
@@ -107,4 +115,4 @@ Tobias Petrasch - [@TPetrasch](https://twitter.com/TPetrasch) - tobias.petrasch@
 
 ## Acknowledgments
 
-* [Protocol Labs](https://www.protocol.ai)
+- [Protocol Labs](https://www.protocol.ai)
