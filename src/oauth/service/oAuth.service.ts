@@ -124,9 +124,16 @@ export class OAuthService {
   public async validateAuthorizationRequest(
     authorizationRequest: AuthorizationRequestEntity,
   ) {
-    const expirationTimestamp = Date.now() - 600 * 1000;
-    const expired =
-      authorizationRequest.createdAt.getTime() > expirationTimestamp;
+    const validTimeframe = 600 * 1000;
+    const expirationTimestamp =
+      authorizationRequest.createdAt.getTime() + validTimeframe;
+
+    const expired = Date.now() > expirationTimestamp;
+
+    console.log(validTimeframe);
+    console.log(expirationTimestamp);
+    console.log(Date.now());
+    console.log(expired);
 
     if (!authorizationRequest.valid || expired) {
       throw new InvalidAuthorizationRequestException();
