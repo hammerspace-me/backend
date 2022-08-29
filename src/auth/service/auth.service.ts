@@ -34,9 +34,10 @@ export class AuthService {
   }
 
   public checkNonceValidity(date: Date): boolean {
-    const thirtyMins = 1000 * 60 * 30;
-    const thirtyMinsAgo = Date.now() - thirtyMins;
-    return date.getTime() > thirtyMinsAgo;
+    const validTimeframe = 30 * 60 * 1000;
+    const expirationTimestamp = date.getTime() + validTimeframe;
+    const expired = Date.now() > expirationTimestamp;
+    return expired;
   }
 
   public async createNonce(
