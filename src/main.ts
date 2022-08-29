@@ -5,10 +5,6 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { urlencoded, json } from 'express';
 
 async function bootstrap() {
-  const date = new Date();
-  const offset = date.getTimezoneOffset();
-  console.log('Timezone offset', offset);
-
   const app = await NestFactory.create(AppModule);
   const config = new DocumentBuilder()
     .setTitle('Backpack backend')

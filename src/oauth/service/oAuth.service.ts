@@ -127,14 +127,7 @@ export class OAuthService {
     const validTimeframe = 600 * 1000;
     const expirationTimestamp =
       authorizationRequest.createdAt.getTime() + validTimeframe;
-
     const expired = Date.now() > expirationTimestamp;
-
-    console.log(validTimeframe);
-    console.log(expirationTimestamp);
-    console.log(Date.now());
-    console.log(expired);
-
     if (!authorizationRequest.valid || expired) {
       throw new InvalidAuthorizationRequestException();
     }
