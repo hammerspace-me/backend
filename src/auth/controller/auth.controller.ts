@@ -36,8 +36,7 @@ export class AuthController {
   @UsePipes(new ValidationPipe({ transform: true }))
   public async login(@Res() res: Response, @Body() loginDto: LoginDto) {
     const nonce = await this.authService.getNonce(loginDto.address);
-    // TODO: Check for timezones and add this.authService.checkNonceValidity(nonce.createdAt)
-    if (!nonce) {
+    if (!nonce || this.authService.checkNonceValidity(nonce.createdAt)) {
       throw new UnauthorizedException('Nonce is invalid', 'NONCE_INVALID');
     }
 
