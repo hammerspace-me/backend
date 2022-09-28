@@ -101,7 +101,7 @@ export class OAuthService {
     id: string,
   ): Promise<AuthorizationRequestEntity> {
     const authorizationRequest =
-      await this.authorizationRequestRepository.findOne(id);
+      await this.authorizationRequestRepository.findOne({ where: { id } });
     if (!authorizationRequest) {
       throw new AuthorizationRequestNotFoundException();
     }
@@ -174,7 +174,9 @@ export class OAuthService {
     clientId: string,
     clientSecret: string,
   ): Promise<void> {
-    const application = await this.applicationRepository.findOne(clientId);
+    const application = await this.applicationRepository.findOne({
+      where: { id: clientId },
+    });
     if (!application) {
       throw new ClientNotFoundException();
     }
@@ -249,7 +251,9 @@ export class OAuthService {
   }
 
   public async findApplication(clientId: string) {
-    const application = await this.applicationRepository.findOne(clientId);
+    const application = await this.applicationRepository.findOne({
+      where: { id: clientId },
+    });
     if (!application) {
       throw new ClientNotFoundException();
     }

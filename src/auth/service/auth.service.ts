@@ -21,16 +21,14 @@ export class AuthService {
   ) {}
 
   public async getNonce(owner: string): Promise<NonceEntity> {
-    return await this.nonceRepository.findOne(
-      {
+    return await this.nonceRepository.findOne({
+      where: {
         owner: owner,
       },
-      {
-        order: {
-          createdAt: 'DESC',
-        },
+      order: {
+        createdAt: 'DESC',
       },
-    );
+    });
   }
 
   public checkNonceValidity(date: Date): boolean {

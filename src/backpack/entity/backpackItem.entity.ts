@@ -33,7 +33,6 @@ export class BackpackItemEntity {
     (type) => BackpackEntity,
     (backpack: BackpackEntity) => backpack.backpackItems,
     {
-      primary: true,
       cascade: ['insert', 'update'],
     },
   )
