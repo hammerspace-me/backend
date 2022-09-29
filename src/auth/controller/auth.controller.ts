@@ -25,6 +25,7 @@ import { BackpackNotFoundApiResponse } from 'src/docs/responses/notFoundApiRespo
 import { UnauthorizedApiResponse } from 'src/docs/responses/authResponse.decorator';
 import { ValidationFailedApiResponse } from 'src/docs/responses/validationApiResponse.decorator';
 import { ServerErrorApiResponse } from 'src/docs/responses/serverErrorResponse.decorator';
+import { ApiOperation } from '@nestjs/swagger';
 
 @ServerErrorApiResponse()
 @Controller()
@@ -40,6 +41,10 @@ export class AuthController {
   @BackpackNotFoundApiResponse()
   @ValidationFailedApiResponse()
   @UnauthorizedApiResponse()
+  @ApiOperation({
+    description:
+      'Login to backpack by signing a nonce with an ethereum wallet.',
+  })
   @HttpCode(201)
   @UsePipes(new ValidationPipe({ transform: true }))
   public async login(@Res() res: Response, @Body() loginDto: LoginDto) {
@@ -66,6 +71,10 @@ export class AuthController {
   @Post('auth/request')
   @NonceSuccessApiResponse()
   @ValidationFailedApiResponse()
+  @ApiOperation({
+    description:
+      'Retrieve a nonce for login to backpack and create a backpack for the associated user if not existing.',
+  })
   @HttpCode(201)
   @UsePipes(new ValidationPipe({ transform: true }))
   public async createNonce(
