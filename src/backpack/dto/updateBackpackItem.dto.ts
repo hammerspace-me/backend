@@ -1,18 +1,20 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString } from 'class-validator';
+import { CategoryApiProperty } from '../../docs/properties/categoryApiProperty.decorator';
+import { MetadataApiProperty } from '../../docs/properties/metadataApiProperty.decorator';
+import { SourceApiProperty } from '../../docs/properties/sourceApiProperty.decorator';
 
 export class UpdateBackpackItemDto {
-  @ApiProperty()
+  @CategoryApiProperty()
   @IsString()
   @IsOptional()
   readonly category: string;
 
-  @ApiProperty()
+  @SourceApiProperty()
   @IsString()
   @IsOptional()
   readonly source: string;
 
-  @ApiProperty()
+  @MetadataApiProperty()
   @IsOptional()
   readonly metadata: any;
 }

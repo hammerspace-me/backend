@@ -10,7 +10,6 @@ import {
   Logger,
   HttpCode,
 } from '@nestjs/common';
-import { ApiResponse } from '@nestjs/swagger';
 import { BackpackService } from '../../backpack/service/backpack.service';
 import { AuthService } from '../service/auth.service';
 import { CreateNonceDto } from '../dto/createNonce.dto';
@@ -18,7 +17,16 @@ import { Response } from 'express';
 import { LoginDto } from '../dto/login.dto';
 import { BackpackNotFoundException } from 'src/backpack/exception/backpackNotFound.exception';
 import { CreateBackpackDto } from 'src/backpack/dto/createBackpack.dto';
+import {
+  LoginSuccessApiResponse,
+  NonceSuccessApiResponse,
+} from 'src/docs/responses/successApiResponse.decorator';
+import { BackpackNotFoundApiResponse } from 'src/docs/responses/notFoundApiResponse.decorator';
+import { UnauthorizedApiResponse } from 'src/docs/responses/authResponse.decorator';
+import { ValidationFailedApiResponse } from 'src/docs/responses/validationApiResponse.decorator';
+import { ServerErrorApiResponse } from 'src/docs/responses/serverErrorResponse.decorator';
 
+@ServerErrorApiResponse()
 @Controller()
 export class AuthController {
   private readonly logger = new Logger(AuthController.name);
@@ -28,10 +36,10 @@ export class AuthController {
   ) {}
 
   @Post('auth/login')
-  @ApiResponse({
-    status: 201,
-    description: 'User has been logged in successfully',
-  })
+  @LoginSuccessApiResponse()
+  @BackpackNotFoundApiResponse()
+  @ValidationFailedApiResponse()
+  @UnauthorizedApiResponse()
   @HttpCode(201)
   @UsePipes(new ValidationPipe({ transform: true }))
   public async login(@Res() res: Response, @Body() loginDto: LoginDto) {
@@ -56,10 +64,8 @@ export class AuthController {
   }
 
   @Post('auth/request')
-  @ApiResponse({
-    status: 201,
-    description: 'Nonce has been created successfully',
-  })
+  @NonceSuccessApiResponse()
+  @ValidationFailedApiResponse()
   @HttpCode(201)
   @UsePipes(new ValidationPipe({ transform: true }))
   public async createNonce(

@@ -12,7 +12,7 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor,
 } from '@nestjs/common';
-import { ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guard/jwtAuth.guard';
 import { BackpackService } from 'src/backpack/service/backpack.service';
 import CreateAuthorizationRequestDto from '../dto/createAuthorizationRequest.dto';
@@ -31,8 +31,24 @@ import { AuthorizationCodeResponseDto } from '../dto/authorizationCodeResponse.d
 import { AccessTokenResponseDto } from '../dto/accessTokenResponse.dto';
 import AuthorizationRequestEntity from '../entity/authorizationRequest.entity';
 import { CreateTokenDto } from '../dto/createToken.dto';
+import { ServerErrorApiResponse } from 'src/docs/responses/serverErrorResponse.decorator';
+import { ValidationFailedApiResponse } from 'src/docs/responses/validationApiResponse.decorator';
+import {
+  ActivationRequestSuccessApiResponse,
+  ApplicationSuccessApiResponse,
+  AuthorizationRequestSuccessApiResponse,
+  TokenSuccessApiResponse,
+} from 'src/docs/responses/successApiResponse.decorator';
+import {
+  ActivationRequestNotFoundApiResponse,
+  ApplicationNotFoundApiResponse,
+  AuthorizationRequestNotFoundApiResponse,
+} from 'src/docs/responses/notFoundApiResponse.decorator';
+import { UnauthorizedApiResponse } from 'src/docs/responses/authResponse.decorator';
+import { EndpointMethod } from 'src/docs/responses/endpointMethod.enum';
 
 @Controller('oauth')
+@ServerErrorApiResponse()
 export default class OAuthController {
   private readonly logger = new Logger(OAuthController.name);
 
@@ -42,10 +58,11 @@ export default class OAuthController {
   ) {}
 
   @Post('authorize')
-  @ApiResponse({
-    status: 200,
-    description: 'Authorization request has been created successfully',
-  })
+  @AuthorizationRequestSuccessApiResponse(EndpointMethod.CREATE)
+  @ApplicationNotFoundApiResponse()
+  @ValidationFailedApiResponse()
+  @UnauthorizedApiResponse()
+  @ApiBearerAuth()
   @HttpCode(200)
   @UseGuards(JwtAuthGuard)
   public async createAuthorizationRequest(
@@ -77,10 +94,10 @@ export default class OAuthController {
   }
 
   @Post('authorize/:id')
-  @ApiResponse({
-    status: 200,
-    description: 'Authorization request has been confirmed successfully',
-  })
+  @AuthorizationRequestSuccessApiResponse(EndpointMethod.UPDATE)
+  @ValidationFailedApiResponse()
+  @UnauthorizedApiResponse()
+  @ApiBearerAuth()
   @HttpCode(200)
   @UseGuards(JwtAuthGuard)
   public async confirmAuthorizationRequest(
@@ -115,10 +132,9 @@ export default class OAuthController {
   }
 
   @Post('activation')
-  @ApiResponse({
-    status: 201,
-    description: 'Activation request has been created successfully',
-  })
+  @ActivationRequestSuccessApiResponse(EndpointMethod.CREATE)
+  @ApplicationNotFoundApiResponse()
+  @ValidationFailedApiResponse()
   @HttpCode(201)
   public async createActivation(
     @Body() createActivationRequest: CreateActivationRequestDto,
@@ -129,30 +145,28 @@ export default class OAuthController {
   }
 
   @Get('activation/:code')
-  @ApiResponse({
-    status: 200,
-    description: 'Activation request has been presented successfully',
-  })
+  @ActivationRequestSuccessApiResponse(EndpointMethod.READ)
+  @ActivationRequestNotFoundApiResponse()
   @UseInterceptors(ClassSerializerInterceptor)
   public async getActivation(@Param('code') code: string) {
     return this.oAuthService.findActivation(code);
   }
 
   @Get('application/:id')
-  @ApiResponse({
-    status: 200,
-    description: 'Application has been presented successfully',
-  })
+  @ApplicationSuccessApiResponse(EndpointMethod.READ)
+  @ApplicationNotFoundApiResponse()
+  @ValidationFailedApiResponse()
   @UseInterceptors(ClassSerializerInterceptor)
   public async getApplication(@Param('id', ParseUUIDPipe) id: string) {
     return this.oAuthService.findApplication(id);
   }
 
   @Post('activation/:code')
-  @ApiResponse({
-    status: 200,
-    description: 'Activation request has been updated successfully',
-  })
+  @ActivationRequestSuccessApiResponse(EndpointMethod.UPDATE)
+  @ActivationRequestNotFoundApiResponse()
+  @ValidationFailedApiResponse()
+  @UnauthorizedApiResponse()
+  @ApiBearerAuth()
   @HttpCode(200)
   @UseGuards(JwtAuthGuard)
   public async updateActivation(
@@ -170,10 +184,10 @@ export default class OAuthController {
   }
 
   @Post('token')
-  @ApiResponse({
-    status: 201,
-    description: 'Token has been created successfully',
-  })
+  @TokenSuccessApiResponse()
+  @AuthorizationRequestNotFoundApiResponse()
+  @ValidationFailedApiResponse()
+  @UnauthorizedApiResponse()
   @HttpCode(201)
   public async createToken(@Body() createToken: CreateTokenDto) {
     const tokenType = 'Bearer';
