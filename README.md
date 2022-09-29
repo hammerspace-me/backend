@@ -1,19 +1,8 @@
-<div id="top"></div>
-<br />
-<div align="center">
-  <a href="https://github.com/Metaverse-Backpack/backpack-backend">
-    <img src="images/logo.png" alt="Logo" width="200">
-  </a>
-
-<h3 align="center">Backpack Backend</h3>
-  <p align="center">
-    Backend service for Metaverse Backpack - a virtual backpack for your Metaverse assets
-  </p>
-</div>
+# Metaverse-Backpack/backpack-backend
 
 ## About The Project
 
-The backpack backend is a service that creates a virtual backpack for your assets stored on IPFS and makes them available for third-party applications.
+The Metaverse Backpack is a virtual backpack for all the assets that belong to you. It helps you move and express yourself in the Metaverse. Backpack's focus is to enable interoperability and seamlessness. The Metaverse-Backpack backend service is a RESTful API to manage your virtual backpack and make it available to third-party applications and technology providers. Feel free to visit the [project website](https://www.metabag.dev) or our [E2E demo](https://demo.metabag.dev).
 
 ## Getting Started
 
@@ -85,6 +74,10 @@ $ npm run start
 # Build service in production mode and run
 $ npm run start:prod
 ```
+
+## Documentation
+
+The backpack backend provides a comprehensive Swagger API documentation. The backpack backend exposes the `/api` endpoint with the documentation of all endpoints and entities associated to the RESTful API. If you are running the backend locally, you can use `http://localhost:3000/api` to visit the Swagger documentation. If you want to use the (official) deployed version, please use `https://backend.metabag.dev/api` (Note: The deployed version might differ from the latest commit in the repository. Deployment is only done if version provides enough confidence and is stable and tested).
 
 ## Known Issues
 
