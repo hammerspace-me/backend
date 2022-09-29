@@ -110,12 +110,14 @@ export class BackpackService {
     id: string,
     withRelations?: boolean,
   ): Promise<BackpackEntity> {
-    const properties: object = withRelations
-      ? {
-          relations: ['backpackItems'],
-        }
-      : null;
-    const backpack = await this.backpackRepository.findOne(id, properties);
+    const properties = { where: { id } };
+    if (withRelations) {
+      properties['relations'] = ['backpackItems'];
+    }
+    const backpack = await this.backpackRepository.findOne({
+      where: { id },
+      ...properties,
+    });
     if (!backpack) {
       throw new BackpackNotFoundException();
     }
