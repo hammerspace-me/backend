@@ -12,7 +12,7 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guard/jwtAuth.guard';
 import { BackpackService } from 'src/backpack/service/backpack.service';
 import CreateAuthorizationRequestDto from '../dto/createAuthorizationRequest.dto';
@@ -63,6 +63,10 @@ export default class OAuthController {
   @ValidationFailedApiResponse()
   @UnauthorizedApiResponse()
   @ApiBearerAuth()
+  @ApiOperation({
+    description:
+      'Create an authorization request for OAuth2 authorization code flow.',
+  })
   @HttpCode(200)
   @UseGuards(JwtAuthGuard)
   public async createAuthorizationRequest(
@@ -98,6 +102,10 @@ export default class OAuthController {
   @ValidationFailedApiResponse()
   @UnauthorizedApiResponse()
   @ApiBearerAuth()
+  @ApiOperation({
+    description:
+      'Confirm an authorization request for OAuth2 authorization code flow.',
+  })
   @HttpCode(200)
   @UseGuards(JwtAuthGuard)
   public async confirmAuthorizationRequest(
@@ -135,6 +143,10 @@ export default class OAuthController {
   @ActivationRequestSuccessApiResponse(EndpointMethod.CREATE)
   @ApplicationNotFoundApiResponse()
   @ValidationFailedApiResponse()
+  @ApiOperation({
+    description:
+      'Create an activation code request (used for devices with limited input capabilities).',
+  })
   @HttpCode(201)
   public async createActivation(
     @Body() createActivationRequest: CreateActivationRequestDto,
@@ -147,6 +159,9 @@ export default class OAuthController {
   @Get('activation/:code')
   @ActivationRequestSuccessApiResponse(EndpointMethod.READ)
   @ActivationRequestNotFoundApiResponse()
+  @ApiOperation({
+    description: 'Retrieve an activation code request by the associated code.',
+  })
   @UseInterceptors(ClassSerializerInterceptor)
   public async getActivation(@Param('code') code: string) {
     return this.oAuthService.findActivation(code);
@@ -156,6 +171,9 @@ export default class OAuthController {
   @ApplicationSuccessApiResponse(EndpointMethod.READ)
   @ApplicationNotFoundApiResponse()
   @ValidationFailedApiResponse()
+  @ApiOperation({
+    description: 'Retrieve a client application associated to the provided id.',
+  })
   @UseInterceptors(ClassSerializerInterceptor)
   public async getApplication(@Param('id', ParseUUIDPipe) id: string) {
     return this.oAuthService.findApplication(id);
@@ -167,6 +185,9 @@ export default class OAuthController {
   @ValidationFailedApiResponse()
   @UnauthorizedApiResponse()
   @ApiBearerAuth()
+  @ApiOperation({
+    description: 'Update an activation code request and take ownership.',
+  })
   @HttpCode(200)
   @UseGuards(JwtAuthGuard)
   public async updateActivation(
@@ -188,6 +209,10 @@ export default class OAuthController {
   @AuthorizationRequestNotFoundApiResponse()
   @ValidationFailedApiResponse()
   @UnauthorizedApiResponse()
+  @ApiOperation({
+    description:
+      'Create a token based on refresh token or authorization code (adheres to OAuth2 standard).',
+  })
   @HttpCode(201)
   public async createToken(@Body() createToken: CreateTokenDto) {
     const tokenType = 'Bearer';
