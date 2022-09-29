@@ -13,7 +13,7 @@ import {
   Delete,
   ParseUUIDPipe,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CreateBackpackDto } from '../dto/createBackpack.dto';
 import { BackpackService } from '../service/backpack.service';
 import { CreateBackpackItemDto } from '../dto/createBackpackItem.dto';
@@ -49,6 +49,9 @@ export class BackpackController {
   @UseGuards(JwtAuthGuard)
   @BackpackSuccessApiResponse(EndpointMethod.READ)
   @BackpackNotFoundApiResponse()
+  @ApiOperation({
+    description: 'Retrieve the backpack associated to the logged in user.',
+  })
   public async getBackpackByOwner(@Request() req) {
     const backpack = await this.backpackService.findBackpackByOwner(
       req.user.address,
@@ -61,6 +64,9 @@ export class BackpackController {
   @BackpackSuccessApiResponse(EndpointMethod.READ)
   @BackpackNotFoundApiResponse()
   @ValidationFailedApiResponse()
+  @ApiOperation({
+    description: 'Retrieve a specific backpack associated to the provided id.',
+  })
   public async getBackpack(@Param('id', ParseUUIDPipe) id: string) {
     const backpack = await this.backpackService.findBackpack(id, true);
     return backpack;
@@ -70,6 +76,10 @@ export class BackpackController {
   @BackpackItemSuccessApiResponse(EndpointMethod.READ)
   @BackpackItemNotFoundApiResponse()
   @ValidationFailedApiResponse()
+  @ApiOperation({
+    description:
+      'Retrieve a specific backpack item associated to the provided id.',
+  })
   public async getBackpackItem(@Param('id', ParseUUIDPipe) id: string) {
     const backpackItem = await this.backpackService.findBackpackItem(id, true);
     return backpackItem;
@@ -79,6 +89,9 @@ export class BackpackController {
   @BackpackSuccessApiResponse(EndpointMethod.CREATE)
   @BackpackExistsApiResponse()
   @ValidationFailedApiResponse()
+  @ApiOperation({
+    description: 'Create a new backpack associated to the logged in user.',
+  })
   @HttpCode(201)
   @UsePipes(new ValidationPipe({ transform: true }))
   public async createBackpack(@Body() createBackpackDto: CreateBackpackDto) {
@@ -92,6 +105,10 @@ export class BackpackController {
   @BackpackItemSuccessApiResponse(EndpointMethod.CREATE)
   @BackpackItemExistsApiResponse()
   @ValidationFailedApiResponse()
+  @ApiOperation({
+    description:
+      'Create a new backpack item associated to the backpack of the logged in user.',
+  })
   @HttpCode(201)
   @UseGuards(JwtAuthGuard)
   public async createBackpackItem(
@@ -110,6 +127,10 @@ export class BackpackController {
   @BackpackItemSuccessApiResponse(EndpointMethod.CREATE)
   @BackpackItemExistsApiResponse()
   @ValidationFailedApiResponse()
+  @ApiOperation({
+    description:
+      'Create a new backpack item associated to the backpack of the logged in user by providing the file contents directly as base64.',
+  })
   @UseGuards(JwtAuthGuard)
   public async createBackpackItemFromFile(
     @Request() req,
@@ -129,6 +150,10 @@ export class BackpackController {
   @BackpackItemSuccessApiResponse(EndpointMethod.DELETE)
   @BackpackItemNotFoundApiResponse()
   @ValidationFailedApiResponse()
+  @ApiOperation({
+    description:
+      'Delete a specific backpack item associated to the provided id.',
+  })
   @UseGuards(JwtAuthGuard)
   public async deleteBackpackItem(
     @Request() req,
@@ -145,6 +170,10 @@ export class BackpackController {
   @BackpackItemSuccessApiResponse(EndpointMethod.UPDATE)
   @BackpackItemNotFoundApiResponse()
   @ValidationFailedApiResponse()
+  @ApiOperation({
+    description:
+      'Update a specific backpack item associated to the provided id.',
+  })
   @UseGuards(JwtAuthGuard)
   public async updateBackpackItem(
     @Request() req,
