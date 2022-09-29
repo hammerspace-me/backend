@@ -1,35 +1,43 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, IsEnum } from 'class-validator';
+import { CategoryApiProperty } from '../../docs/properties/categoryApiProperty.decorator';
+import { MetadataApiProperty } from '../../docs/properties/metadataApiProperty.decorator';
+import { SourceApiProperty } from '../../docs/properties/sourceApiProperty.decorator';
 import { FileExtension } from '../enum/fileExtension.enum';
 
 export class CreateBackpackItemFromFileDto {
-  @ApiProperty()
+  @CategoryApiProperty()
   @IsString()
   @IsNotEmpty()
   readonly category: string;
 
-  @ApiProperty()
+  @SourceApiProperty()
   @IsString()
   @IsNotEmpty()
   readonly source: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Name of the file',
+  })
   @IsString()
   @IsNotEmpty()
   readonly filename: string;
 
   @ApiProperty({
     enum: FileExtension,
+    description: 'Type / extension of the file',
   })
   @IsEnum(FileExtension)
   @IsNotEmpty()
   readonly fileExtension: FileExtension;
 
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Base64 string of the file content',
+  })
   @IsString()
   @IsNotEmpty()
   readonly file: string;
 
-  @ApiProperty()
+  @MetadataApiProperty()
   readonly metadata: any;
 }

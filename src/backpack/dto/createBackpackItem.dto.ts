@@ -1,22 +1,27 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsJSON, IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
+import { CategoryApiProperty } from '../../docs/properties/categoryApiProperty.decorator';
+import { MetadataApiProperty } from '../../docs/properties/metadataApiProperty.decorator';
+import { SourceApiProperty } from '../../docs/properties/sourceApiProperty.decorator';
 
 export class CreateBackpackItemDto {
-  @ApiProperty()
+  @CategoryApiProperty()
   @IsString()
   @IsNotEmpty()
   readonly category: string;
 
-  @ApiProperty()
+  @SourceApiProperty()
   @IsString()
   @IsNotEmpty()
   readonly source: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    description: 'IPFS CID of the underlying asset',
+  })
   @IsString()
   @IsNotEmpty()
   readonly content: string;
 
-  @ApiProperty()
+  @MetadataApiProperty()
   readonly metadata: any;
 }
