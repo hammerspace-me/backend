@@ -7,14 +7,14 @@ export class UpdateBackpackItemDto {
   @CategoryApiProperty()
   @IsString()
   @IsOptional()
-  readonly category: string;
+  readonly category?: string;
 
   @SourceApiProperty()
   @IsString()
   @IsOptional()
-  readonly source: string;
+  readonly source?: string;
 
   @MetadataApiProperty()
   @IsOptional()
-  readonly metadata: any;
+  readonly metadata?: any;
 }

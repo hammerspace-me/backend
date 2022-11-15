@@ -11,8 +11,9 @@ import {
   ParseUUIDPipe,
   UseInterceptors,
   ClassSerializerInterceptor,
+  Delete,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guard/jwtAuth.guard';
 import { BackpackService } from 'src/backpack/service/backpack.service';
 import CreateAuthorizationRequestDto from '../dto/createAuthorizationRequest.dto';
@@ -46,6 +47,11 @@ import {
 } from 'src/docs/responses/notFoundApiResponse.decorator';
 import { UnauthorizedApiResponse } from 'src/docs/responses/authResponse.decorator';
 import { EndpointMethod } from 'src/docs/responses/endpointMethod.enum';
+import { Environment } from '../enum/environment.enum';
+import { CreateApplicationDto } from '../dto/createApplication.dto';
+import { DeleteApplicationDto } from '../dto/deleteApplication.dto';
+import { ApplicationExistsApiResponse } from 'src/docs/responses/existsApiResponse.decorator';
+import { UpdateApplicationDto } from '../dto/updateApplication.dto';
 
 @Controller('oauth')
 @ServerErrorApiResponse()
@@ -79,10 +85,15 @@ export default class OAuthController {
       createAuthorizationRequestDto.clientId,
     );
 
-    await this.oAuthService.validateRedirectUri(
-      application,
-      createAuthorizationRequestDto.redirectUri,
-    );
+    // Only validate the redirect URI when the client application is for a production environment.
+    // Ensures easier integration with third-party applications due
+    // to changing redirectURIs in development mode
+    if (application.environment === Environment.prod) {
+      await this.oAuthService.validateRedirectUri(
+        application,
+        createAuthorizationRequestDto.redirectUri,
+      );
+    }
 
     const createdAuthorizationRequest =
       await this.oAuthService.createAuthorizationRequest(
@@ -167,18 +178,6 @@ export default class OAuthController {
     return this.oAuthService.findActivation(code);
   }
 
-  @Get('application/:id')
-  @ApplicationSuccessApiResponse(EndpointMethod.READ)
-  @ApplicationNotFoundApiResponse()
-  @ValidationFailedApiResponse()
-  @ApiOperation({
-    description: 'Retrieve a client application associated to the provided id.',
-  })
-  @UseInterceptors(ClassSerializerInterceptor)
-  public async getApplication(@Param('id', ParseUUIDPipe) id: string) {
-    return this.oAuthService.findApplication(id);
-  }
-
   @Post('activation/:code')
   @ActivationRequestSuccessApiResponse(EndpointMethod.UPDATE)
   @ActivationRequestNotFoundApiResponse()
@@ -247,5 +246,71 @@ export default class OAuthController {
       refresh_token: token.refreshToken,
       token_type: token.tokenType,
     };
+  }
+
+  @Get('application/:id')
+  @ApplicationSuccessApiResponse(EndpointMethod.READ)
+  @ApplicationNotFoundApiResponse()
+  @ValidationFailedApiResponse()
+  @ApiOperation({
+    description: 'Retrieve a client application associated to the provided id.',
+  })
+  @UseInterceptors(ClassSerializerInterceptor)
+  public async getApplication(@Param('id', ParseUUIDPipe) id: string) {
+    return this.oAuthService.findApplication(id);
+  }
+
+  @Post('application')
+  @ApiOperation({
+    description: 'Register a new client application.',
+  })
+  @ApplicationSuccessApiResponse(EndpointMethod.CREATE)
+  @ApplicationExistsApiResponse()
+  @ValidationFailedApiResponse()
+  @HttpCode(201)
+  public async createApplication(
+    @Body() createApplication: CreateApplicationDto,
+  ) {
+    const createdApplication = await this.oAuthService.createApplication(
+      createApplication,
+    );
+
+    // We want to explicitly show the client secret on this endpoint
+    return {
+      ...createdApplication,
+      clientSecret: createdApplication.clientSecret,
+    };
+  }
+
+  @Delete('application/:id')
+  @ApplicationSuccessApiResponse(EndpointMethod.DELETE)
+  @ApplicationNotFoundApiResponse()
+  @ValidationFailedApiResponse()
+  @UnauthorizedApiResponse()
+  @ApiOperation({
+    description: 'Delete a client application.',
+  })
+  @HttpCode(200)
+  public async deleteApplication(
+    @Param('id') id: string,
+    @Body() deleteApplication: DeleteApplicationDto,
+  ) {
+    return await this.oAuthService.deleteApplication(id, deleteApplication);
+  }
+
+  @Post('application/:id')
+  @ApplicationSuccessApiResponse(EndpointMethod.UPDATE)
+  @ApplicationNotFoundApiResponse()
+  @ValidationFailedApiResponse()
+  @UnauthorizedApiResponse()
+  @ApiOperation({
+    description: 'Update a client application.',
+  })
+  @HttpCode(200)
+  public async updateApplication(
+    @Param('id') id: string,
+    @Body() updateApplication: UpdateApplicationDto,
+  ) {
+    return await this.oAuthService.updateApplication(id, updateApplication);
   }
 }

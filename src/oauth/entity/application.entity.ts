@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Environment } from '../enum/environment.enum';
 
 @Entity()
 export default class ApplicationEntity {
@@ -25,8 +26,12 @@ export default class ApplicationEntity {
   @Column()
   banner: string;
 
+  // TODO: This might be an array of redirect Uris in the future
   @Column()
   redirectUri: string;
+
+  @Column('enum', { enum: Environment, default: Environment.prod })
+  environment: Environment;
 
   @CreateDateColumn()
   createdAt: Date;

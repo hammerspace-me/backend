@@ -13,3 +13,10 @@ export const BackpackItemExistsApiResponse = () => {
     description: 'Backpack item already exists.',
   });
 };
+
+export const ApplicationExistsApiResponse = () => {
+  return ApiResponse({
+    status: 409,
+    description: 'Application already exists.',
+  });
+};

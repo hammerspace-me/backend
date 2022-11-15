@@ -2,9 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
+import { NotAuthorizedException } from 'src/backpack/exception/notAuthorized.exception';
 import { Repository } from 'typeorm';
 import CreateActivationRequestDto from '../dto/createActivationRequest.dto';
+import { CreateApplicationDto } from '../dto/createApplication.dto';
 import CreateAuthorizationRequestDto from '../dto/createAuthorizationRequest.dto';
+import { DeleteApplicationDto } from '../dto/deleteApplication.dto';
 import UpdateActivationRequestDto from '../dto/updateActivationRequest.dto';
 import ActivationRequestEntity from '../entity/activationRequest.entity';
 import ApplicationEntity from '../entity/application.entity';
@@ -21,6 +24,9 @@ import { InvalidRedirectUriException } from '../exception/invalidRedirectUri.exc
 import { InvalidStateException } from '../exception/invalidState.exception';
 import { GenerateAuthorizationCodeStrategy } from '../strategy/generateAuthorizationCode.strategy';
 import { generateActivationCode } from '../utils/activationCode.utils';
+import { randomBytes } from 'crypto';
+import { ApplicationExistsException } from '../exception/applicationExists.exception';
+import { UpdateApplicationDto } from '../dto/updateApplication.dto';
 
 @Injectable()
 export class OAuthService {
@@ -258,5 +264,69 @@ export class OAuthService {
       throw new ClientNotFoundException();
     }
     return application;
+  }
+
+  public async findApplicationByName(name: string) {
+    const application = await this.applicationRepository.findOne({
+      where: { name: name },
+    });
+    if (!application) {
+      throw new ClientNotFoundException();
+    }
+    return application;
+  }
+
+  public async ensureApplicationNameIsUnique(name: string) {
+    const application = await this.applicationRepository.findOne({
+      where: { name: name },
+    });
+    if (application) {
+      throw new ApplicationExistsException();
+    }
+  }
+
+  public async deleteApplication(
+    id: string,
+    deleteApplication: DeleteApplicationDto,
+  ) {
+    const application = await this.findApplication(id);
+    if (application.clientSecret !== deleteApplication.clientSecret) {
+      throw new NotAuthorizedException();
+    }
+    await this.applicationRepository.delete({ id: id });
+    return application;
+  }
+
+  public async createApplication(createApplication: CreateApplicationDto) {
+    const secret = randomBytes(32).toString('hex');
+    await this.ensureApplicationNameIsUnique(createApplication.name);
+    const newApplication = this.applicationRepository.create({
+      ...createApplication,
+      clientSecret: secret,
+    });
+    const createdApplication = await this.applicationRepository.save(
+      newApplication,
+    );
+    return createdApplication;
+  }
+
+  public async updateApplication(
+    id: string,
+    updateApplication: UpdateApplicationDto,
+  ) {
+    const application = await this.findApplication(id);
+
+    if (application.clientSecret !== updateApplication.clientSecret) {
+      throw new NotAuthorizedException();
+    }
+
+    await this.applicationRepository.update(
+      {
+        id: id,
+      },
+      updateApplication,
+    );
+
+    return await this.findApplication(id);
   }
 }

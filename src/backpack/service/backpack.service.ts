@@ -168,11 +168,7 @@ export class BackpackService {
       {
         id: backpackItemId,
       },
-      {
-        source: updateBackpackItem.source,
-        category: updateBackpackItem.category,
-        metadata: updateBackpackItem.metadata,
-      },
+      updateBackpackItem,
     );
 
     return await this.findBackpackItem(backpackItemId, true);
