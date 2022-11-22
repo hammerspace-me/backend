@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { NotAuthorizedException } from 'src/backpack/exception/notAuthorized.exception';
+import { NotAuthorizedException } from 'src/space/exception/notAuthorized.exception';
 import { Repository } from 'typeorm';
 import CreateActivationRequestDto from '../dto/createActivationRequest.dto';
 import { CreateApplicationDto } from '../dto/createApplication.dto';
@@ -141,12 +141,12 @@ export class OAuthService {
 
   public createAccessToken(
     address: string,
-    backpackId: string,
+    spaceId: string,
     scopes: string[],
   ): string {
     const payload = {
       sub: address,
-      backpack: backpackId,
+      space: spaceId,
       scopes: scopes.join(' '),
     };
     return this.jwtService.sign(payload, {
@@ -156,12 +156,12 @@ export class OAuthService {
 
   public createRefreshToken(
     address: string,
-    backpackId: string,
+    spaceId: string,
     scopes: string[],
   ): string {
     const payload = {
       sub: address,
-      backpack: backpackId,
+      space: spaceId,
       scopes: scopes.join(' '),
     };
     return this.jwtService.sign(payload, {

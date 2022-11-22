@@ -6,7 +6,7 @@ import ApplicationEntity from './entity/application.entity';
 import AuthorizationRequestEntity from './entity/authorizationRequest.entity';
 import OAuthController from './controller/oAuth.controller';
 import { OAuthService } from './service/oAuth.service';
-import { BackpackModule } from 'src/backpack/backpack.module';
+import { SpaceModule } from 'src/space/space.module';
 import { JwtModule } from '@nestjs/jwt';
 
 @Module({
@@ -17,7 +17,7 @@ import { JwtModule } from '@nestjs/jwt';
       AuthorizationRequestEntity,
     ]),
     ConfigModule,
-    BackpackModule,
+    SpaceModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({

@@ -8,9 +8,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const version = process.env.npm_package_version || 'LTS';
   const config = new DocumentBuilder()
-    .setTitle('Backpack backend')
+    .setTitle('Hammerspace backend')
     .setDescription(
-      "Backend service documentation for Backpack. Backpack helps you move and express yourself in the Metaverse. Backpack's focus is to enable interoperability and seamlessness. Check out <a href='https://metabag.dev'>https://metabag.dev</a> to learn more.",
+      "Backend service documentation for Hammerspace. Hammerspace helps you move and express yourself in games and metaverses. Hammerspace's focus is to enable interoperability and seamlessness. Check out <a href='https://hammerspace.me'>https://hammerspace.me</a> to learn more.",
     )
     .setVersion(version)
     .addBearerAuth()

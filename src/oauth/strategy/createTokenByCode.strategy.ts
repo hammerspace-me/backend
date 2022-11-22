@@ -1,4 +1,4 @@
-import { BackpackService } from 'src/backpack/service/backpack.service';
+import { SpaceService } from 'src/space/service/space.service';
 import { CreateTokenDto } from '../dto/createToken.dto';
 import { TokenResponseDto } from '../dto/tokenResponse.dto';
 import { OAuthService } from '../service/oAuth.service';
@@ -6,11 +6,11 @@ import { CreateTokenStrategy } from './createToken.strategy';
 
 export class CreateTokenByCodeStrategy implements CreateTokenStrategy {
   private readonly oAuthService: OAuthService;
-  private readonly backpackService: BackpackService;
+  private readonly spaceService: SpaceService;
 
-  constructor(oAuthService: OAuthService, backpackService: BackpackService) {
+  constructor(oAuthService: OAuthService, spaceService: SpaceService) {
     this.oAuthService = oAuthService;
-    this.backpackService = backpackService;
+    this.spaceService = spaceService;
   }
 
   public async createToken(
@@ -37,17 +37,17 @@ export class CreateTokenByCodeStrategy implements CreateTokenStrategy {
       );
 
     const owner = invalidatedAuthorizationRequest.owner;
-    const backpack = await this.backpackService.findBackpackByOwner(owner);
+    const space = await this.spaceService.findSpaceByOwner(owner);
 
     const accessToken = this.oAuthService.createAccessToken(
       owner,
-      backpack.id,
+      space.id,
       invalidatedAuthorizationRequest.scopes,
     );
 
     const refreshToken = this.oAuthService.createRefreshToken(
       owner,
-      backpack.id,
+      space.id,
       invalidatedAuthorizationRequest.scopes,
     );
 

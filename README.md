@@ -1,8 +1,8 @@
-# Metaverse-Backpack/backpack-backend
+# Hammerspace/backend
 
 ## About The Project
 
-The Metaverse Backpack is a virtual backpack for all the assets that belong to you. It helps you move and express yourself in the Metaverse. Backpack's focus is to enable interoperability and seamlessness. The Metaverse-Backpack backend service is a RESTful API to manage your virtual backpack and make it available to third-party applications and technology providers. Feel free to visit the [project website](https://www.metabag.dev) or our [E2E demo](https://demo.metabag.dev).
+Hammerspace is a virtual space for all the assets that belong to you. It helps you move and express yourself in the Metaverse. Hammerspace's focus is to enable interoperability and seamlessness. This backend service is a RESTful API to manage your virtual Hammerspace and make it available to third-party applications and technology providers. Feel free to visit the [project website](https://www.hammerspace.me) or our [E2E demo](https://demo.hammerspace.me).
 
 ## Getting Started
 
@@ -36,13 +36,13 @@ The Metaverse Backpack is a virtual backpack for all the assets that belong to y
 
 - Web3.Storage account and API token
 
-  In order to use web3.storage you need an API key. First, head over to [web3.storage](https://web3.storage) to login with your email address. You will receive an email with a magic link that signs you in – no password needed. After you successfully logged in, go to API Keys via the account section of the navigation bar. You will find a button to Create a new token. When prompted for an API key name, you can freely choose one or use “Backpack”. Copy the content of the key column to your .env file.
+  In order to use web3.storage you need an API key. First, head over to [web3.storage](https://web3.storage) to login with your email address. You will receive an email with a magic link that signs you in – no password needed. After you successfully logged in, go to API Keys via the account section of the navigation bar. You will find a button to Create a new token. When prompted for an API key name, you can freely choose one or use “Hammerspace”. Copy the content of the key column to your .env file.
 
 ### Installation
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/Metaverse-Backpack/backpack-backend.git
+   git clone https://github.com/Hammerspace/backend.git
    ```
 2. Install NPM packages
    ```sh
@@ -51,7 +51,7 @@ The Metaverse Backpack is a virtual backpack for all the assets that belong to y
 
 ## Usage
 
-The backpack backend consists of two components: the backend service and the database. First start the database with the following command:
+This backend consists of two components: the backend service and the database. First start the database with the following command:
 
 ```bash
 # Start up the development database
@@ -77,7 +77,7 @@ $ npm run start:prod
 
 ## Documentation
 
-The backpack backend provides a comprehensive Swagger API documentation. The backpack backend exposes the `/api` endpoint with the documentation of all endpoints and entities associated to the RESTful API. If you are running the backend locally, you can use `http://localhost:3000/api` to visit the Swagger documentation. If you want to use the (official) deployed version, please use `https://backend.metabag.dev/api` (Note: The deployed version might differ from the latest commit in the repository. Deployment is only done if version provides enough confidence and is stable and tested).
+This backend provides a comprehensive Swagger API documentation. It exposes the `/api` endpoint with the documentation of all endpoints and entities associated to the RESTful API. If you are running the backend locally, you can use `http://localhost:3000/api` to visit the Swagger documentation. If you want to use the (official) deployed version, please use `https://backend.hammerspace.me/api` (Note: The deployed version might differ from the latest commit in the repository. Deployment is only done if version provides enough confidence and is stable and tested).
 
 ## Known Issues
 

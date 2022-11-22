@@ -7,10 +7,10 @@ import {
   UpdateDateColumn,
   CreateDateColumn,
 } from 'typeorm';
-import { BackpackEntity } from './backpack.entity';
+import { SpaceEntity } from './space.entity';
 
 @Entity()
-export class BackpackItemEntity {
+export class ItemEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -29,15 +29,11 @@ export class BackpackItemEntity {
   })
   public metadata: any;
 
-  @ManyToOne(
-    (type) => BackpackEntity,
-    (backpack: BackpackEntity) => backpack.backpackItems,
-    {
-      cascade: ['insert', 'update'],
-    },
-  )
+  @ManyToOne((type) => SpaceEntity, (space: SpaceEntity) => space.items, {
+    cascade: ['insert', 'update'],
+  })
   @Exclude()
-  backpack: BackpackEntity;
+  space: SpaceEntity;
 
   @CreateDateColumn()
   createdAt: Date;

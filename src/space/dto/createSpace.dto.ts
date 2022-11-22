@@ -1,11 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
 import { IsArray, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
-import { CreateBackpackItemDto } from './createBackpackItem.dto';
+import { CreateItemDto } from './createItem.dto';
 
-export class CreateBackpackDto {
+export class CreateSpaceDto {
   @ApiProperty({
-    description: 'Ethereum address of the owner of the backpack',
+    description: 'Ethereum address of the owner of the space',
   })
   @IsString()
   @Transform(({ value }) => value.toLowerCase())
@@ -13,12 +13,12 @@ export class CreateBackpackDto {
   readonly owner: string;
 
   @ApiProperty({
-    type: () => CreateBackpackItemDto,
+    type: () => CreateItemDto,
     description:
-      'Initial set of backpack items that will be populated into the new backpack',
+      'Initial set of items that will be populated into the new space',
   })
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => CreateBackpackItemDto)
-  readonly backpackItems: CreateBackpackItemDto[];
+  @Type(() => CreateItemDto)
+  readonly items: CreateItemDto[];
 }

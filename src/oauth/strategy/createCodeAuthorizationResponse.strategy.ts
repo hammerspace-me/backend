@@ -1,4 +1,4 @@
-import { BackpackService } from 'src/backpack/service/backpack.service';
+import { SpaceService } from 'src/space/service/space.service';
 import { AccessTokenResponseDto } from '../dto/accessTokenResponse.dto';
 import { AuthorizationCodeResponseDto } from '../dto/authorizationCodeResponse.dto';
 import AuthorizationRequestEntity from '../entity/authorizationRequest.entity';

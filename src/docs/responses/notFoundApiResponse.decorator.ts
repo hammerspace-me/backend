@@ -1,16 +1,16 @@
 import { ApiResponse } from '@nestjs/swagger';
 
-export const BackpackNotFoundApiResponse = () => {
+export const SpaceNotFoundApiResponse = () => {
   return ApiResponse({
     status: 404,
-    description: 'Backpack could not be found.',
+    description: 'Space could not be found.',
   });
 };
 
-export const BackpackItemNotFoundApiResponse = () => {
+export const ItemNotFoundApiResponse = () => {
   return ApiResponse({
     status: 404,
-    description: 'Backpack item could not be found.',
+    description: 'Item could not be found.',
   });
 };
 

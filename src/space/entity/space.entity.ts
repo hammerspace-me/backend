@@ -6,22 +6,20 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { BackpackItemEntity } from './backpackItem.entity';
+import { ItemEntity } from './item.entity';
 
 @Entity()
-export class BackpackEntity {
+export class SpaceEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
   owner: string;
 
-  @OneToMany(
-    (type) => BackpackItemEntity,
-    (backpackItem) => backpackItem.backpack,
-    { cascade: ['insert', 'update'] },
-  )
-  backpackItems: BackpackItemEntity[];
+  @OneToMany((type) => ItemEntity, (item) => item.space, {
+    cascade: ['insert', 'update'],
+  })
+  items: ItemEntity[];
 
   @CreateDateColumn()
   createdAt: Date;

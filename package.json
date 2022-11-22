@@ -1,8 +1,8 @@
 {
-  "name": "metaversebackpack",
+  "name": "hammerspace",
   "private": true,
   "version": "1.0.0",
-  "description": "Backpack service for the Metaverse",
+  "description": "Backend service for Hammerspace",
   "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
