@@ -4,6 +4,7 @@ import { SpaceModule } from './space/space.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { OAuthModule } from './oauth/oAuth.module';
+import { DataSourceOptions } from 'typeorm';
 
 @Module({
   imports: [
@@ -11,7 +12,8 @@ import { OAuthModule } from './oauth/oAuth.module';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => {
-        const config: any = {
+        console.log(__dirname);
+        let config: DataSourceOptions = {
           type: 'postgres',
           host: configService.get('POSTGRES_HOST'),
           port: +configService.get<number>('POSTGRES_PORT'),
@@ -19,13 +21,15 @@ import { OAuthModule } from './oauth/oAuth.module';
           password: configService.get('POSTGRES_PASSWORD'),
           database: configService.get('POSTGRES_DATABASE'),
           entities: [__dirname + '/**/*.entity{.ts,.js}'],
-          timezone: 'Z',
-          synchronize: true,
+          synchronize: false,
+          migrationsRun: true,
+          logging: true,
+          migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
+          ssl:
+            configService.get('POSTGRES_SSL') == 'true'
+              ? { rejectUnauthorized: false }
+              : null,
         };
-
-        if (configService.get('POSTGRES_SSL') == 'true') {
-          config['ssl'] = { rejectUnauthorized: false };
-        }
 
         return config;
       },

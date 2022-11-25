@@ -75,13 +75,26 @@ $ npm run start
 $ npm run start:prod
 ```
 
+## Migrations
+
+### Scripts
+
+Migrations are automatically run by NestJS during the start of the application. Additionally the backend provides a set of scripts to manage migrations:
+
+- `npm run migration:generate --name=MigrationName`: Generate a new migration based on the difference between model and database
+- `npm run migration:create --name=MigrationName`: Create a new manual migration, requires to implement `up()` and `down()` methods
+- `npm run migration:run --name=MigrationName`: Run a specific migration
+- `npm run migration:revert --name=MigrationName`: Revert a specific migration
+
+Migrations are stored in `src/migrations`.
+
+## Known issues
+
+- Migrations: Migrations are read from the `dist` folder. In very few cases, the compilation process might not update the migrations. E.g., if a newly created migration is not applied to the database when starting the project in dev mode. Or when migrations are changed. This can be mitigated by running `npm install` and `npm run build` before running the application.
+
 ## Documentation
 
 This backend provides a comprehensive Swagger API documentation. It exposes the `/api` endpoint with the documentation of all endpoints and entities associated to the RESTful API. If you are running the backend locally, you can use `http://localhost:3000/api` to visit the Swagger documentation. If you want to use the (official) deployed version, please use `https://backend.hammerspace.me/api` (Note: The deployed version might differ from the latest commit in the repository. Deployment is only done if version provides enough confidence and is stable and tested).
-
-## Known Issues
-
-- Backend service fails to start when changes are made to the database model: Currently there is no proper database migration management implemented. Whenever the database entities are changed, there is the possibility of a crash of the backend service as the database model differs from the database itself. To resolve the issue, the database can be removed and re-deployed, either by removing the old container and starting a new one (`docker-compose stop db`, `docker-compose rm db`, `docker-compose up -d db`) or by using a tool/CLI to interact with the database and purge it completely.
 
 ## Contributing
 
