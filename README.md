@@ -1,4 +1,4 @@
-# Hammerspace/backend
+# hammerspace-me/backend
 
 ## About The Project
 
