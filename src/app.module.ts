@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { BackpackModule } from './backpack/backpack.module';
+import { SpaceModule } from './space/space.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { OAuthModule } from './oauth/oAuth.module';
@@ -31,7 +31,7 @@ import { OAuthModule } from './oauth/oAuth.module';
       },
       inject: [ConfigService],
     }),
-    BackpackModule,
+    SpaceModule,
     AuthModule,
     OAuthModule,
   ],

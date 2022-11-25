@@ -52,10 +52,10 @@ export class AuthService {
     return calculatedAddress.toLowerCase() == loginDto.address;
   }
 
-  public createJwtToken(address: string, backpackId: string): string {
+  public createJwtToken(address: string, spaceId: string): string {
     const payload = {
       sub: address,
-      backpack: backpackId,
+      space: spaceId,
       scopes: [
         Scopes['avatars:read'],
         Scopes['avatars:create'],

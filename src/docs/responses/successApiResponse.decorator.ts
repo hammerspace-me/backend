@@ -1,17 +1,17 @@
 import { ApiResponse } from '@nestjs/swagger';
 import { EndpointMethod } from './endpointMethod.enum';
 
-export const BackpackSuccessApiResponse = (method: EndpointMethod) => {
+export const SpaceSuccessApiResponse = (method: EndpointMethod) => {
   return ApiResponse({
     status: method === EndpointMethod.CREATE ? 201 : 200,
-    description: 'Backpack has been successfully ' + method + '.',
+    description: 'Space has been successfully ' + method + '.',
   });
 };
 
-export const BackpackItemSuccessApiResponse = (method: EndpointMethod) => {
+export const ItemSuccessApiResponse = (method: EndpointMethod) => {
   return ApiResponse({
     status: method === EndpointMethod.CREATE ? 201 : 200,
-    description: 'Backpack item has been successfully ' + method + '.',
+    description: 'Item has been successfully ' + method + '.',
   });
 };
 

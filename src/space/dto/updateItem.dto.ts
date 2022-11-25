@@ -3,7 +3,7 @@ import { CategoryApiProperty } from '../../docs/properties/categoryApiProperty.d
 import { MetadataApiProperty } from '../../docs/properties/metadataApiProperty.decorator';
 import { SourceApiProperty } from '../../docs/properties/sourceApiProperty.decorator';
 
-export class UpdateBackpackItemDto {
+export class UpdateItemDto {
   @CategoryApiProperty()
   @IsString()
   @IsOptional()

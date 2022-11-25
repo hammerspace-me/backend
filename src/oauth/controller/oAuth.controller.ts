@@ -15,7 +15,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guard/jwtAuth.guard';
-import { BackpackService } from 'src/backpack/service/backpack.service';
+import { SpaceService } from 'src/space/service/space.service';
 import CreateAuthorizationRequestDto from '../dto/createAuthorizationRequest.dto';
 import { InvalidGrantTypeException } from '../exception/invalidGrantType.exception';
 import { InvalidResponseTypeException } from '../exception/invalidResponseType.exception';
@@ -60,7 +60,7 @@ export default class OAuthController {
 
   constructor(
     private readonly oAuthService: OAuthService,
-    private readonly backpackService: BackpackService,
+    private readonly spaceService: SpaceService,
   ) {}
 
   @Post('authorize')
@@ -134,7 +134,7 @@ export default class OAuthController {
       createAuthorizationResponseStrategy =
         new CreateTokenAuthorizationResponseStrategy(
           this.oAuthService,
-          this.backpackService,
+          this.spaceService,
         );
     } else if (responseType === 'code') {
       createAuthorizationResponseStrategy =
@@ -221,12 +221,12 @@ export default class OAuthController {
     if (createToken.grant_type === 'authorization_code') {
       createTokenStrategy = new CreateTokenByCodeStrategy(
         this.oAuthService,
-        this.backpackService,
+        this.spaceService,
       );
     } else if (createToken.grant_type === 'refresh_token') {
       createTokenStrategy = new CreateTokenByRefreshStrategy(
         this.oAuthService,
-        this.backpackService,
+        this.spaceService,
       );
     }
 

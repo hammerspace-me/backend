@@ -1,16 +1,16 @@
 import { ApiResponse } from '@nestjs/swagger';
 
-export const BackpackExistsApiResponse = () => {
+export const SpaceExistsApiResponse = () => {
   return ApiResponse({
     status: 409,
-    description: 'Backpack already exists.',
+    description: 'Space already exists.',
   });
 };
 
-export const BackpackItemExistsApiResponse = () => {
+export const ItemExistsApiResponse = () => {
   return ApiResponse({
     status: 409,
-    description: 'Backpack item already exists.',
+    description: 'Item already exists.',
   });
 };
 
